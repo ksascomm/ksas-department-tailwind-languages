@@ -1,0 +1,93 @@
+/*
+Theme Name:   KSAS Department Tailwind Language Programs
+Theme URI:    https://krieger.jhu.edu
+Description:  KSAS Department Tailwind Child Theme
+Author:       KSAS Communications
+Author URI:   https://github.com/ksascomm
+Template:     ksas-department-tailwind
+Version:      1.0.0
+License:      GNU General Public License v2 or later
+License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:  ksas-department-tailwind
+*/
+
+
+.bucket-5 .bucket-text {
+	--tw-bg-opacity: 1;
+	--tw-text-opacity: 1;
+	background-color: rgb(0 45 114/var(--tw-bg-opacity));
+	color: rgb(254 254 254/var(--tw-text-opacity));
+}
+
+.bucket-1 .degrees .degree,
+.bucket-3 .degrees .degree,
+.bucket-5 .degrees .degree {
+	color: black;
+}
+
+
+.bucket-5 .bucket-text a,
+.bucket-5 .bucket-text a:hover {
+	--tw-text-opacity: 1;
+	color: rgb(254 254 254/var(--tw-text-opacity));
+}
+
+.bucket-5 .bucket-text a:hover {
+	box-shadow: inset 0 -2.5rem 0 0 #31261d;
+}
+
+
+.bucket-4 .bucket-text,
+.bucket-6 .bucket-text {
+	--tw-bg-opacity: 0.75;
+	background-color: rgb(104 172 229/var(--tw-bg-opacity));
+	background: rgba(148, 207, 248, .84);
+}
+
+.degrees {
+	margin-top: 1rem;
+	font-size: 1rem;
+}
+
+.degrees .degree {
+	--tw-border-opacity: 1;
+	--tw-shadow: 0 1px 2px 0 rgb(0 0 0/0.05);
+	--tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+	border-color: rgb(229 226 224/var(--tw-border-opacity));
+	border-width: 2px;
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+	padding: .5rem;
+	background: white;
+}
+
+
+@media (min-width: 1024px) {
+	.bucket-5 .bucket-text {
+		--tw-bg-opacity: 0.75;
+	}
+
+	.bucket-4,
+	.bucket-5,
+	.bucket-6 {
+		margin-top: 0;
+	}
+
+
+}
+
+@media (min-width: 1280px) and (max-width:1535px) {
+.bucket-text p {
+	line-height: 1.3;
+}
+}
+
+@media (min-width: 1536px) {
+	.bucket-text p {
+		margin-bottom: 1rem;
+	}
+	.degrees {
+		position: absolute;
+		bottom: 1rem;
+	}
+}
+
