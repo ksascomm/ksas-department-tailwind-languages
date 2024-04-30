@@ -11,7 +11,6 @@
 <?php
 	$studyfieldacf  = get_field( 'studyfield' );
 	$studyfield_url = 'https://krieger.jhu.edu/wp-json/wp/v2/studyfields?slug=' . $studyfieldacf;
-	// $studyfield_url = 'https://krieger.jhu.edu/wp-json/wp/v2/studyfields?slug=history';
 if ( WP_DEBUG || false === ( $studyfield = get_transient( 'studyfield_api_query' ) ) ) {
 	$studyfield = wp_remote_get( $studyfield_url );
 	set_transient( 'studyfield_api_query', $studyfield, 2419200 );
@@ -55,7 +54,7 @@ if ( ! empty( $studyfield_response ) ) :
 				<?php endif; ?>
 			</h2>
 			<div class="mt-2 text-primary text-lg md:text-xl tracking-tight"><?php the_content(); ?></div>
-				<ul class="flex flex-wrap study-field list-none">
+				<!--<ul class="flex flex-wrap study-field list-none">
 					<?php if ( ! empty( $studyfield_data->post_meta_fields->ecpt_degreesoffered[0] ) ) : ?>
 						<li class="leading-normal text-lg px-2">
 							<span class="border-b-[3px] border-blue">Degrees Offered</span>
@@ -74,7 +73,7 @@ if ( ! empty( $studyfield_response ) ) :
 							<span class="block font-heavy font-bold pt-2"><?php echo esc_html( $studyfield_data->post_meta_fields->ecpt_minors[0] ); ?></span>
 						</li>
 					<?php endif; ?>
-				</ul>
+				</ul>-->
 			</div>
 	</div>
 	<div class="hidden lg:block lg:w-5/12 front featured-image">
@@ -173,7 +172,7 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 			else :
 				?>
 				<div class="p-2">
-					<div class="h-full rounded-lg field mb-4 px-6 py-4 overflow-hidden bg-grey-lightest research-project-card-outline">
+					<div class="h-full rounded-lg field mb-4 px-6 py-4 overflow-hidden bg-grey-lightest grey-card-outline">
 						<h3 class="text-2xl 2xl:text-3xl not-prose font-semi font-semibold !mt-0">
 							<?php if ( get_sub_field( 'explore_bucket_link' ) ) : ?>
 							<a href="<?php the_sub_field( 'explore_bucket_link' ); ?>">
@@ -183,7 +182,23 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 								<?php the_sub_field( 'explore_bucket_heading' ); ?>
 							<?php endif; ?>
 						</h3>
-						<p class="leading-normaltext-lg 2xl:text-xl tracking-wide font-light"><?php the_sub_field( 'explore_bucket_text' ); ?></p>
+						<p class="leading-normal text-lg 2xl:text-xl tracking-wide font-light"><?php the_sub_field( 'explore_bucket_text' ); ?></p>
+						<?php if ( get_sub_field( 'major' ) == 1 ||  get_sub_field( 'minor' ) == 1 ) : ?>
+							<ul class="degrees">
+							<?php if ( get_sub_field( 'major' ) == 1 ) : ?>
+								<li class="degree on major">Major</li>
+							<?php endif;?>
+							<?php if ( get_sub_field( 'minor' ) == 1 ) : ?>
+								<li class="degree on minor">Minor</li>
+							<?php endif;?>
+							<?php $graduate_degree_checked_options = get_sub_field( 'graduate_degree' ); ?>
+							<?php if ( $graduate_degree_checked_options ) : ?>
+								<?php foreach ( $graduate_degree_checked_options as $graduate_degree_checked_option ) : ?>
+									<li class="degree on <?php echo $graduate_degree_checked_option['value']; ?>"><?php echo $graduate_degree_checked_option['label']; ?></li>
+								<?php endforeach; ?>
+							<?php endif; ?>
+							</ul>
+						<?php endif;?>
 					</div>
 				</div>
 			<?php endif; ?>

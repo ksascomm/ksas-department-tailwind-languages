@@ -25,7 +25,7 @@ get_header();
 	$subdepartment                = str_replace( ' ', '%20', $subdepartment_select_unclean );
 	$subdepartment                = str_replace( '-', '%20', $subdepartment );
 	$subdepartment                = str_replace( '&', '%26', $subdepartment );
-	$fall                       = 'fall%202023';
+	$fall                       = 'fall%202024';
 	$summer                     = 'summer%202024';
 	$spring                     = 'spring%202024';
 	$open                       = 'open';
@@ -176,6 +176,6 @@ if ( 'ksas-blocks' === $theme->template ) :
 	</table>
 	</div>
 </main><!-- #main -->
-
+<?php get_template_part( 'template-parts/courses-scripts' ); ?>
 <?php
 get_footer();

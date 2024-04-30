@@ -319,12 +319,24 @@ function custom_ksasacademic_mll_page_title( $title ) {
 
 add_filter( 'pre_get_document_title', 'custom_ksasacademic_mll_page_title', 99999 );
 
-
-add_action( 'pre_get_posts', 'tl_project_tax_page' );
-
+/**
+ * Add Program name to body class
+ */
+ function add_taxonomy_to_single( $classes ) {
+    if ( is_singular() ) {
+        global $post;
+        $my_terms = get_the_terms( $post->ID, 'program' );
+        if ( $my_terms && ! is_wp_error( $my_terms ) ) {
+            $classes[] = $my_terms[0]->slug;
+        }
+        return $classes;
+    }
+}
+add_filter( 'body_class', 'add_taxonomy_to_single' );
 /**
  * Show all Program News posts on Program News Archive Page
  */
+add_action( 'pre_get_posts', 'tl_project_tax_page' );
 function tl_project_tax_page( $query ) {
 	if ( ! is_admin() && $query->is_main_query() && is_tax( 'program' ) ) {
 			$query->set( 'posts_per_page', '-1' );
@@ -352,30 +364,34 @@ function remove_parent_dequeue_sis_scripts() {
 }
 add_action( 'after_setup_theme', 'remove_parent_dequeue_sis_scripts' );
 
+is_admin() || add_filter( 'dynamic_sidebar_params', 'wpse172754_add_widget_classes' );
 
-add_action( 'wp_enqueue_scripts', 'language_program_courses_scripts' );
+/**
+ * Add classes for widgets.
+ *
+ * @param  array $params
+ * @return array
+ */
+function wpse172754_add_widget_classes( $params ) {
+
+if ($params[0]['widget_name'] == 'Text') {
+  $params[0] = array_replace($params[0], array('before_widget' => str_replace("widget_text", "widget_text prose", $params[0]['before_widget'])));
+}
+
+  return $params;
+
+}
+
+
+add_action( 'wp_enqueue_scripts', 'ksas_blocks_child_custom_posts_scripts' );
 	/**
-	 * Conditionally add data tables and courses scripts to Language Programs page
+	 * Conditionally add isotope scripts to Research Projects page
 	 *
 	 * Note that this function is hooked into the wp_enqueue_scripts
 	 */
-function language_program_courses_scripts() {
-	if ( is_page_template( 'page-templates/language-program-courses.php' ) ) :
-		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css', array(), true );
-
-		wp_enqueue_style( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.2.0/css/searchPanes.dataTables.min.css', array(), true );
-
-		wp_enqueue_style( 'courses-css', get_stylesheet_directory_uri() . '/css/courses.css', false, '1.0.0', 'all' );
-
-		wp_enqueue_script( 'data-tables', '//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js', array(), '1.13.7', false );
-		wp_script_add_data( 'data-tables', 'defer', true );
-
-		wp_enqueue_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.2.0/js/dataTables.searchPanes.min.js', array(), '2.2.0', false );
-		wp_script_add_data( 'data-tables-searchpanes', 'defer', true );
-
-		wp_enqueue_script( 'data-tables-select', '//cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js', array(), '1.7.0', false );
-		wp_script_add_data( 'data-tables-select', 'defer', true );
-
-		wp_enqueue_script( 'courses-js', get_stylesheet_directory_uri() . '/js/courses.js', array( 'jquery' ), '1.0.0', true );
+function ksas_blocks_child_custom_posts_scripts() {
+	if ( is_page_template( 'page-templates/people-directory-languages-rows.php' ) ) :
+		wp_enqueue_script( 'isotope-packaged', 'https://unpkg.com/isotope-layout@3.0.6/dist/isotope.pkgd.min.js', array(), '3.0.6', true );
+		wp_enqueue_script( 'isotope-local', get_template_directory_uri() . '/dist/js/isotope.js', array( 'jquery' ), KSAS_DEPARTMENT_TAILWIND_VERSION, true );
 	endif;
 }
