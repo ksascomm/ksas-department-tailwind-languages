@@ -10,8 +10,6 @@
 	position: fixed;
    /* Stay in place */
 	z-index: 1005;
-   /* Sit on top */
-	padding-top: 100px;
    /* Location of the box */
 	top: 0;
 	right: 0;
@@ -111,11 +109,37 @@
 	height: 4rem;
 	width: 5rem;
 }
+
+@media print, screen and (max-width: 39.9988em) {
+	.modal-content {
+	  top: 0;
+	  right: 0;
+	  bottom: 0;
+	  left: 0;
+	  width: 100%;
+	  max-width: none;
+	  height: 100%;
+	  min-height: 100%;
+	  margin-left: 0;
+	  border: 0;
+	  border-radius: 0;
+	}
+  }
+
 @media print, screen and (min-width: 40em) {
+	.modal-content {
+		width: 600px;
+		max-width: 87.5rem;
+	}
+	.modal {
+		padding-top: 100px;
+	}
+}
+@media print, screen and (min-width: 1280px) {
 	.modal-content {
 		width: 1000px;
 		max-width: 87.5rem;
-   }
+	}
 }
 /** Course Table */
 .course-table thead {
@@ -130,6 +154,11 @@
 	font-family: gentona-semibold,"Helvetica Neue",Roboto,sans-serif;
 	font-weight: 600;
 }
+
+.course-table td {
+	font-size: 1rem;
+}
+
 .course-listings div.dataTables_wrapper div.dataTables_info,
 .course-listings .dt-info {
 	padding: 8px;
@@ -201,8 +230,42 @@ div.dt-container .dt-paging .dt-paging-button:hover {
 	float: right;
 }
 
+.all-courses table.dataTable>tbody>tr>th, table.dataTable>tbody>tr>td {
+	padding: 0;
+}
+
+.page-template-courses-undergrad-ksasblocks div.dtsp-panesContainer button.dtsp-clearAll, 
+.page-template-courses-undergrad-ksasblocks div.dtsp-panesContainer button.dtsp-collapseAll,
+.page-template-courses-undergrad-ksasblocks div.dtsp-panesContainer button.dtsp-showAll {
+  padding: 10px;
+}
+
+.page-template-courses-undergrad-ksasblocks .dt-scroll-body {
+  height: auto !important;
+}
+
+table.dataTable > tbody > tr.child span.dtr-title {
+	font-family: gentona-semibold,"Helvetica Neue",Roboto,sans-serif;
+	font-weight: 600;
+}
+
+@media screen and (min-width:767px) {
+	.course-table li[data-dtr-index="6"] {
+		display: none;
+	}
+}
+
 @media screen and (min-width: 1024px) {
 	.dt-paging.paging_full_numbers {
 		float: right;
 	  }	
+}
+
+@media screen and (max-width: 1023px) {
+	.course-table td {
+		font-size: .9rem;
+	}
+	/*.show-for-medium {
+	  display: none;
+	}*/
 }

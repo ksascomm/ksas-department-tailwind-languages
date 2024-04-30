@@ -14,7 +14,6 @@ get_header();
 	require get_stylesheet_directory() . '/lib/Zebra_cURL.php';
 
 	// Set query string variables.
-	$sis_courses_plugin_options = get_option( 'sis_courses_plugin_option_name' );
 	$department_unclean         = 'Modern Languages and Literatures';
 	$department                 = str_replace( ' ', '%20', $department_unclean );
 	$department                 = str_replace( '&', '%26', $department );
@@ -163,10 +162,10 @@ if ( 'ksas-blocks' === $theme->template ) :
 			<tr>
 				<th>Course # (Section)</th>
 				<th>Title</th>
-				<th class="show-for-medium">Day/Times</th>
-				<th class="show-for-medium">Instructor</th>
-				<th class="show-for-medium">Location</th>
-				<th class="show-for-medium">Term</th>
+				<th>Day/Times</th>
+				<th>Instructor</th>
+				<th>Location</th>
+				<th>Term</th>
 				<th>Course Details</th>
 			</tr>
 		</thead>
@@ -176,6 +175,5 @@ if ( 'ksas-blocks' === $theme->template ) :
 	</table>
 	</div>
 </main><!-- #main -->
-<?php get_template_part( 'template-parts/courses-scripts' ); ?>
 <?php
 get_footer();

@@ -391,7 +391,39 @@ add_action( 'wp_enqueue_scripts', 'ksas_blocks_child_custom_posts_scripts' );
 	 */
 function ksas_blocks_child_custom_posts_scripts() {
 	if ( is_page_template( 'page-templates/people-directory-languages-rows.php' ) ) :
+		
 		wp_enqueue_script( 'isotope-packaged', 'https://unpkg.com/isotope-layout@3.0.6/dist/isotope.pkgd.min.js', array(), '3.0.6', true );
+		
 		wp_enqueue_script( 'isotope-local', get_template_directory_uri() . '/dist/js/isotope.js', array( 'jquery' ), KSAS_DEPARTMENT_TAILWIND_VERSION, true );
+
+	elseif ( is_page_template( 'page-templates/language-program-courses.php' ) ) : 
+		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css', array(), true );
+	
+		wp_enqueue_style( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.0/css/searchPanes.dataTables.min.css', array(), true );
+	
+		wp_enqueue_style( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.min.css', array(), true );
+	
+		wp_enqueue_style( 'courses-css', get_stylesheet_directory_uri() . '/css/courses.css', false, '1.0.2', 'all' );
+	
+		wp_register_script( 'data-tables', '//cdn.datatables.net/2.0.3/js/dataTables.min.js', array(), '2.0.3', false );
+		wp_enqueue_script( 'data-tables');
+		wp_script_add_data( 'data-tables', 'defer', true );
+	
+		wp_register_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.0/js/dataTables.searchPanes.min.js', array(), '2.3.0', false );
+		wp_enqueue_script( 'data-tables-searchpanes');
+		wp_script_add_data( 'data-tables-searchpanes', 'defer', true );
+	
+		wp_register_script( 'data-tables-select', '//cdn.datatables.net/select/2.0.0/js/dataTables.select.min.js', array(), '2.0.0', false );
+		wp_enqueue_script( 'data-tables-select');
+		wp_script_add_data( 'data-tables-select', 'defer', true );
+	
+		wp_enqueue_script( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js', array(), '3.0.2', false );
+		wp_script_add_data( 'data-tables-responsive', 'defer', true );
+	
+		wp_register_script( 'courses-js', get_stylesheet_directory_uri() . '/js/courses.js', array( 'jquery' ), '1.0.2', true );
+		wp_enqueue_script( 'courses-js');
 	endif;
 }
+
+
+
