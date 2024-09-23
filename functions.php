@@ -322,15 +322,15 @@ add_filter( 'pre_get_document_title', 'custom_ksasacademic_mll_page_title', 9999
 /**
  * Add Program name to body class
  */
- function add_taxonomy_to_single( $classes ) {
-    if ( is_singular() ) {
-        global $post;
-        $my_terms = get_the_terms( $post->ID, 'program' );
-        if ( $my_terms && ! is_wp_error( $my_terms ) ) {
-            $classes[] = $my_terms[0]->slug;
-        }
-        return $classes;
-    }
+function add_taxonomy_to_single( $classes ) {
+	if ( is_singular() ) {
+		global $post;
+		$my_terms = get_the_terms( $post->ID, 'program' );
+		if ( $my_terms && ! is_wp_error( $my_terms ) ) {
+			$classes[] = $my_terms[0]->slug;
+		}
+		return $classes;
+	}
 }
 add_filter( 'body_class', 'add_taxonomy_to_single' );
 /**
@@ -360,7 +360,7 @@ function parent_theme_field_groups( $paths ) {
  * before enqueing the localized scripts/styles
  */
 function remove_parent_dequeue_sis_scripts() {
-	remove_action( 'wp_enqueue_scripts', 'dequeue_sis_scripts');
+	remove_action( 'wp_enqueue_scripts', 'dequeue_sis_scripts' );
 }
 add_action( 'after_setup_theme', 'remove_parent_dequeue_sis_scripts' );
 
@@ -374,11 +374,11 @@ is_admin() || add_filter( 'dynamic_sidebar_params', 'wpse172754_add_widget_class
  */
 function wpse172754_add_widget_classes( $params ) {
 
-if ($params[0]['widget_name'] == 'Text') {
-  $params[0] = array_replace($params[0], array('before_widget' => str_replace("widget_text", "widget_text prose", $params[0]['before_widget'])));
-}
+	if ( $params[0]['widget_name'] == 'Text' ) {
+		$params[0] = array_replace( $params[0], array( 'before_widget' => str_replace( 'widget_text', 'widget_text prose', $params[0]['before_widget'] ) ) );
+	}
 
-  return $params;
+	return $params;
 
 }
 
@@ -391,37 +391,37 @@ add_action( 'wp_enqueue_scripts', 'ksas_blocks_child_custom_posts_scripts' );
 	 */
 function ksas_blocks_child_custom_posts_scripts() {
 	if ( is_page_template( 'page-templates/people-directory-languages-rows.php' ) ) :
-		
+
 		wp_enqueue_script( 'isotope-packaged', 'https://unpkg.com/isotope-layout@3.0.6/dist/isotope.pkgd.min.js', array(), '3.0.6', true );
-		
+
 		wp_enqueue_script( 'isotope-local', get_template_directory_uri() . '/dist/js/isotope.js', array( 'jquery' ), KSAS_DEPARTMENT_TAILWIND_VERSION, true );
 
-	elseif ( is_page_template( 'page-templates/language-program-courses.php' ) ) : 
-		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css', array(), true );
-	
+	elseif ( is_page_template( 'page-templates/language-program-courses.php' ) ) :
+		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/2.1.7/css/dataTables.dataTables.min.css', array(), true );
+
 		wp_enqueue_style( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.0/css/searchPanes.dataTables.min.css', array(), true );
-	
-		wp_enqueue_style( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.min.css', array(), true );
-	
+
+		wp_enqueue_style( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.min.css', array(), true );
+
 		wp_enqueue_style( 'courses-css', get_stylesheet_directory_uri() . '/css/courses.css', false, '1.0.2', 'all' );
-	
-		wp_register_script( 'data-tables', '//cdn.datatables.net/2.0.3/js/dataTables.min.js', array(), '2.0.3', false );
-		wp_enqueue_script( 'data-tables');
+
+		wp_register_script( 'data-tables', '//cdn.datatables.net/2.1.7/js/dataTables.min.js', array(), '2.1.7', false );
+		wp_enqueue_script( 'data-tables' );
 		wp_script_add_data( 'data-tables', 'defer', true );
-	
-		wp_register_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.0/js/dataTables.searchPanes.min.js', array(), '2.3.0', false );
-		wp_enqueue_script( 'data-tables-searchpanes');
+
+		wp_register_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.2/js/dataTables.searchPanes.min.js', array(), '2.3.2', false );
+		wp_enqueue_script( 'data-tables-searchpanes' );
 		wp_script_add_data( 'data-tables-searchpanes', 'defer', true );
-	
+
 		wp_register_script( 'data-tables-select', '//cdn.datatables.net/select/2.0.0/js/dataTables.select.min.js', array(), '2.0.0', false );
-		wp_enqueue_script( 'data-tables-select');
+		wp_enqueue_script( 'data-tables-select' );
 		wp_script_add_data( 'data-tables-select', 'defer', true );
-	
-		wp_enqueue_script( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js', array(), '3.0.2', false );
+
+		wp_enqueue_script( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.min.js', array(), '3.0.3', false );
 		wp_script_add_data( 'data-tables-responsive', 'defer', true );
-	
+
 		wp_register_script( 'courses-js', get_stylesheet_directory_uri() . '/js/courses.js', array( 'jquery' ), '1.0.2', true );
-		wp_enqueue_script( 'courses-js');
+		wp_enqueue_script( 'courses-js' );
 	endif;
 }
 
