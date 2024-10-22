@@ -397,23 +397,23 @@ function ksas_blocks_child_custom_posts_scripts() {
 		wp_enqueue_script( 'isotope-local', get_template_directory_uri() . '/dist/js/isotope.js', array( 'jquery' ), KSAS_DEPARTMENT_TAILWIND_VERSION, true );
 
 	elseif ( is_page_template( 'page-templates/language-program-courses.php' ) ) :
-		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/2.1.7/css/dataTables.dataTables.min.css', array(), true );
+		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css', array(), true );
 
-		wp_enqueue_style( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.0/css/searchPanes.dataTables.min.css', array(), true );
+		wp_enqueue_style( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.3/css/searchPanes.dataTables.min.css', array(), true );
 
 		wp_enqueue_style( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.min.css', array(), true );
 
 		wp_enqueue_style( 'courses-css', get_stylesheet_directory_uri() . '/css/courses.css', false, '1.0.2', 'all' );
 
-		wp_register_script( 'data-tables', '//cdn.datatables.net/2.1.7/js/dataTables.min.js', array(), '2.1.7', false );
+		wp_register_script( 'data-tables', '//cdn.datatables.net/2.1.8/js/dataTables.min.js', array(), '2.1.8', false );
 		wp_enqueue_script( 'data-tables' );
 		wp_script_add_data( 'data-tables', 'defer', true );
 
-		wp_register_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.2/js/dataTables.searchPanes.min.js', array(), '2.3.2', false );
+		wp_register_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.3/js/dataTables.searchPanes.min.js', array(), '2.3.3', false );
 		wp_enqueue_script( 'data-tables-searchpanes' );
 		wp_script_add_data( 'data-tables-searchpanes', 'defer', true );
 
-		wp_register_script( 'data-tables-select', '//cdn.datatables.net/select/2.0.0/js/dataTables.select.min.js', array(), '2.0.0', false );
+		wp_register_script( 'data-tables-select', '//cdn.datatables.net/select/2.1.0/js/dataTables.select.min.js', array(), '2.1.0', false );
 		wp_enqueue_script( 'data-tables-select' );
 		wp_script_add_data( 'data-tables-select', 'defer', true );
 
