@@ -78,46 +78,7 @@ get_header();
 				</div>
 		</div>
 		<?php else : // field_name returned false. ?>
-
-
 		<?php endif; // end of if field_name logic. ?>
-		<?php
-		$slider_query = new WP_Query(
-			array(
-				'post_type'      => 'slider',
-				'posts_per_page' => 8,
-				'orderby'        => 'date',
-				'tax_query'      => array(
-					array(
-						'taxonomy' => 'slider_type',
-						'field'    => 'slug',
-						'terms'    => 'research',
-					),
-				),
-			)
-		);
-		if ( $slider_query->have_posts() ) :
-			?>
-	<div class="news-section px-2 sm:px-0">
-	<div class="prose sm:prose lg:prose-lg xl:prose-xl mx-auto">
-				<div class="flex flex flex-wrap justify-between px-8 lg:px-0">
-					<div>
-						<h2><?php the_field( 'research_heading', 'option' ); ?>
-					</div>
-				</div>
-			</div>
-		<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 mx-auto"> 
-			<?php
-			while ( $slider_query->have_posts() ) :
-				$slider_query->the_post();
-				get_template_part( 'template-parts/content', 'front-faculty-research' );
-		endwhile;
-			?>
-		</div>
-		</div>
-			<?php
-		endif;
-		?>
 	</main><!-- #main -->
 	<?php if ( is_active_sidebar( 'below-news' ) ) : ?>
 		<?php get_template_part( 'template-parts/widgets-below-news' ); ?>

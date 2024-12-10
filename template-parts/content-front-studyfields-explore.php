@@ -37,8 +37,6 @@ if ( ! empty( $studyfield_response ) ) :
 	foreach ( $studyfield_response as $studyfield_data ) :
 		$studyfield_tagline = $studyfield_data->post_meta_fields->ecpt_headline[0];
 		$studyfield_degrees = $studyfield_data->post_meta_fields->ecpt_degreesoffered[0];
-		$studyfield_majors  = $studyfield_data->post_meta_fields->ecpt_majors[0];
-		$studyfield_minors  = $studyfield_data->post_meta_fields->ecpt_minors[0];
 	endforeach;
 	?>
 <?php endif; ?>
@@ -53,28 +51,10 @@ if ( ! empty( $studyfield_response ) ) :
 					<?php the_title(); ?>
 				<?php endif; ?>
 			</h2>
-			<div class="mt-2 text-primary text-lg md:text-xl tracking-tight"><?php the_content(); ?></div>
-				<!--<ul class="flex flex-wrap study-field list-none">
-					<?php if ( ! empty( $studyfield_data->post_meta_fields->ecpt_degreesoffered[0] ) ) : ?>
-						<li class="leading-normal text-lg px-2">
-							<span class="border-b-[3px] border-blue">Degrees Offered</span>
-							<span class="block font-heavy font-bold pt-2"><?php echo esc_html( $studyfield_degrees ); ?></span>
-						</li>
-					<?php endif; ?>
-					<?php if ( ! empty( $studyfield_data->post_meta_fields->ecpt_majors[0] ) ) : ?>
-						<li class="leading-normal text-lg px-2">
-							<span class="border-b-[3px] border-blue">Major</span>
-							<span class="block font-heavy font-bold pt-2"><?php echo esc_html( $studyfield_data->post_meta_fields->ecpt_majors[0] ); ?></span>
-						</li>
-					<?php endif; ?>
-					<?php if ( ! empty( $studyfield_data->post_meta_fields->ecpt_minors[0] ) ) : ?>
-						<li class="leading-normal text-lg px-2">
-							<span class="border-b-[3px] border-blue">Minor</span>
-							<span class="block font-heavy font-bold pt-2"><?php echo esc_html( $studyfield_data->post_meta_fields->ecpt_minors[0] ); ?></span>
-						</li>
-					<?php endif; ?>
-				</ul>-->
+			<div class="mt-2 text-primary text-lg md:text-xl tracking-tight">
+				<?php the_content(); ?>
 			</div>
+		</div>
 	</div>
 	<div class="hidden lg:block lg:w-5/12 front featured-image">
 		<?php if ( have_rows( 'homepage_hero_images' ) ) : ?>
@@ -134,74 +114,43 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 			<div class="bucket relative not-prose bucket-<?php echo get_row_index(); ?>">
 				<?php
 				$image = get_sub_field( 'explore_bucket_image' );
-				if ( get_sub_field( 'explore_bucket_image' ) ) :
-					?>
-					<?php echo wp_get_attachment_image( $image['ID'], 'full', false, array( 'class' => 'lg:blur-[1px] w-full' ) ); ?>
-				<?php endif; ?>
+				echo wp_get_attachment_image( $image['ID'], 'full', false, array( 'class' => 'lg:blur-[1px] w-full' ) );
+				 ?>
 				<div class="p-6 bucket-text lg:top-0 lg:right-0 lg:left-0 lg:bottom-0 lg:inset-0 lg:absolute">
+			<?php else : ?>
+			<div class="p-2">
+				<div class="h-full rounded-lg field mb-4 px-6 py-4 overflow-hidden bg-grey-lightest grey-card-outline">
+			<?php endif;?>
 					<h3 class="text-2xl 2xl:text-3xl not-prose font-semi font-semibold">
-					<?php if ( get_sub_field( 'explore_bucket_link' ) ) : ?>
-						<a href="<?php the_sub_field( 'explore_bucket_link' ); ?>">
-							<?php the_sub_field( 'explore_bucket_heading' ); ?>
-						</a>
-						<?php else : ?>
-							<?php the_sub_field( 'explore_bucket_heading' ); ?>
-						<?php endif; ?>
-					</h3>
-					<p class="leading-normal text-lg 2xl:text-xl tracking-wide font-light"><?php the_sub_field( 'explore_bucket_text' ); ?></p>
-					<?php if ( get_sub_field( 'major' ) == 1 ) : ?>
-						<div class="degrees">
-						<?php if ( get_sub_field( 'major' ) == 1 ) : ?>
-							<span class="degree major">Major</span>
-						<?php endif; ?>
-						<?php if ( get_sub_field( 'minor' ) == 1 ) : ?>
-							<span class="degree minor">Minor</span>
-						<?php endif; ?>
-						<?php $graduate_degree_checked_options = get_sub_field( 'graduate_degree' ); ?>
-						<?php if ( $graduate_degree_checked_options ) : ?>
-							<?php foreach ( $graduate_degree_checked_options as $graduate_degree_checked_option ) : ?>
-								<span class="degree <?php echo $graduate_degree_checked_option['value']; ?>"><?php echo $graduate_degree_checked_option['label']; ?></span>
-							<?php endforeach; ?>
-						<?php endif; ?>
-						</div>
-					<?php endif; ?>
-				</div>
-			</div>
-				<?php
-				// Otherwise, display content in a card.
-			else :
-				?>
-				<div class="p-2">
-					<div class="h-full rounded-lg field mb-4 px-6 py-4 overflow-hidden bg-grey-lightest grey-card-outline">
-						<h3 class="text-2xl 2xl:text-3xl not-prose font-semi font-semibold !mt-0">
-							<?php if ( get_sub_field( 'explore_bucket_link' ) ) : ?>
+						<?php if ( get_sub_field( 'explore_bucket_link' ) ) : ?>
 							<a href="<?php the_sub_field( 'explore_bucket_link' ); ?>">
 								<?php the_sub_field( 'explore_bucket_heading' ); ?>
 							</a>
-							<?php else : ?>
+						<?php else : ?>
 								<?php the_sub_field( 'explore_bucket_heading' ); ?>
-							<?php endif; ?>
-						</h3>
-						<p class="leading-normal text-lg 2xl:text-xl tracking-wide font-light"><?php the_sub_field( 'explore_bucket_text' ); ?></p>
-						<?php if ( get_sub_field( 'major' ) == 1 ||  get_sub_field( 'minor' ) == 1 ) : ?>
-							<ul class="degrees">
-							<?php if ( get_sub_field( 'major' ) == 1 ) : ?>
-								<li class="degree on major">Major</li>
-							<?php endif;?>
-							<?php if ( get_sub_field( 'minor' ) == 1 ) : ?>
-								<li class="degree on minor">Minor</li>
-							<?php endif;?>
-							<?php $graduate_degree_checked_options = get_sub_field( 'graduate_degree' ); ?>
-							<?php if ( $graduate_degree_checked_options ) : ?>
-								<?php foreach ( $graduate_degree_checked_options as $graduate_degree_checked_option ) : ?>
-									<li class="degree on <?php echo $graduate_degree_checked_option['value']; ?>"><?php echo $graduate_degree_checked_option['label']; ?></li>
-								<?php endforeach; ?>
-							<?php endif; ?>
-							</ul>
+						<?php endif; ?>
+					</h3>
+					<p class="leading-normal text-lg 2xl:text-xl tracking-wide font-light">
+						<?php the_sub_field( 'explore_bucket_text' ); ?>
+					</p>
+					<?php if ( get_sub_field( 'major' ) == 1 ||  get_sub_field( 'minor' ) == 1 ) : ?>
+						<ul class="degrees">
+						<?php if ( get_sub_field( 'major' ) == 1 ) : ?>
+							<li class="degree on major">Major</li>
 						<?php endif;?>
-					</div>
+						<?php if ( get_sub_field( 'minor' ) == 1 ) : ?>
+							<li class="degree on minor">Minor</li>
+						<?php endif;?>
+						<?php $graduate_degree_checked_options = get_sub_field( 'graduate_degree' ); ?>
+						<?php if ( $graduate_degree_checked_options ) : ?>
+							<?php foreach ( $graduate_degree_checked_options as $graduate_degree_checked_option ) : ?>
+								<li class="degree on <?php echo $graduate_degree_checked_option['value']; ?>"><?php echo $graduate_degree_checked_option['label']; ?></li>
+							<?php endforeach; ?>
+						<?php endif; ?>
+						</ul>
+					<?php endif;?>
 				</div>
-			<?php endif; ?>
+			</div>
 		<?php endwhile; ?>
 		</div>
 	<?php endif; ?>
