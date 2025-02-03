@@ -420,7 +420,7 @@ function ksas_blocks_child_custom_posts_scripts() {
 		wp_enqueue_script( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.min.js', array(), '3.0.3', false );
 		wp_script_add_data( 'data-tables-responsive', 'defer', true );
 
-		wp_register_script( 'courses-js', get_stylesheet_directory_uri() . '/js/courses.js', array( 'jquery' ), '1.0.2', true );
+		wp_register_script( 'courses-js', get_stylesheet_directory_uri() . '/js/courses.js', array( 'jquery' ), '1.1.0', true );
 		wp_enqueue_script( 'courses-js' );
 	endif;
 }

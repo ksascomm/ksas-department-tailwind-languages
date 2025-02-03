@@ -111,7 +111,7 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 			// If there's an image for the bucket, do CSS magic.
 			if ( get_sub_field( 'explore_bucket_image' ) ) :
 				?>
-			<div class="bucket relative not-prose bucket-<?php echo get_row_index(); ?>">
+			<div class="bucket relative bucket-<?php echo get_row_index(); ?>">
 				<?php
 				$image = get_sub_field( 'explore_bucket_image' );
 				echo wp_get_attachment_image( $image['ID'], 'full', false, array( 'class' => 'lg:blur-[1px] w-full' ) );
@@ -121,7 +121,7 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 			<div class="p-2">
 				<div class="h-full rounded-lg field mb-4 px-6 py-4 overflow-hidden bg-grey-lightest grey-card-outline">
 			<?php endif;?>
-					<h3 class="text-2xl 2xl:text-3xl not-prose font-semi font-semibold">
+					<h3 class="text-2xl 2xl:text-3xl font-semi font-semibold !mt-2">
 						<?php if ( get_sub_field( 'explore_bucket_link' ) ) : ?>
 							<a href="<?php the_sub_field( 'explore_bucket_link' ); ?>">
 								<?php the_sub_field( 'explore_bucket_heading' ); ?>

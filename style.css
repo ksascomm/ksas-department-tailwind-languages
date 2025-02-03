@@ -5,12 +5,19 @@ Description:  KSAS Department Tailwind Child Theme
 Author:       KSAS Communications
 Author URI:   https://github.com/ksascomm
 Template:     ksas-department-tailwind
-Version:      2.1.1
+Version:      3.0
 License:      GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  ksas-department-tailwind
 */
 
+.news-section .grid {
+	max-width: 112ch;
+}
+
+.front.prose .grey-card-outline h3 a:hover, {
+	color: #31261d;
+}
 
 .bucket-5 .bucket-text {
 	--tw-bg-opacity: 1;
@@ -137,3 +144,162 @@ ul.degrees {
 .page-template-language-program-courses .dt-scroll-body {
   height: auto !important;
 }
+
+.home .front h2.text-primary.text-3xl.md\:text-3xl.lg\:text-4xl.mt-8.lg\:mt-0.font-heavy.font-bold {
+	display: none;
+}
+
+.home .front h2.wp-block-heading {
+	margin-top: .5rem;
+  font-family: gentona-bold,system-ui,BlinkMacSystemFont,-apple-system,Segoe UI,sans-serif;
+  font-weight: 700;
+}
+
+.tribe-events-c-messages__message-list-item {
+	font-family: 'gentona-light', system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, sans-serif;
+		font-size: 1rem !important;
+	
+}
+
+.wp-block-query ul.columns-3 {
+	display: grid;
+	list-style: none;
+	padding-left: .5em;
+}
+
+.wp-block-post-title {
+	font-size: 1.5rem;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.wp-block-post-title a {
+	display: inline;
+}
+
+
+.wp-block-post-date {
+	font-family: gentona-bold,"Helvetica Neue",Roboto,sans-serif;
+  font-weight: 700;
+}
+
+.wp-block-post-featured-image img {
+	width: 100%;
+	max-height: 300px;
+	object-fit: cover;
+	object-position: 0% 20%;
+}
+
+
+.page-id-11  #primary-menu > .menu-item.current-menu-parent > a {
+	box-shadow: none;
+}
+
+.page-id-11 .menu-item.current-menu-item.page-item-11.current_page_item a {
+	box-shadow: 0 -3px 0 0 #002d72;
+}
+
+.wp-block-group.is-layout-flow.wp-block-group-is-layout-flow {
+  border: 2px solid rgba(237, 242, 247, 1);
+}
+
+.wp-block-button__link.wp-element-button {
+  padding: .5rem .75rem;
+}
+
+ .below-news-widget-section .widget-area:first-of-type {
+   	background-color: rgba(191, 204, 217, 0.5);
+  }
+
+.wp-block-query ul.columns-3 .wp-block-post-title a {
+	border-bottom: 2px solid;
+	border-color: rgb(229, 226, 224);
+	color: rgb(0 45 114/var(--tw-text-opacity,1));
+	text-decoration-line: none;
+	box-shadow: none;
+}
+
+.tribe-events-calendar-list__event-title-link.tribe-common-anchor-thin {
+	border-bottom: 2px solid !important;
+	border-bottom-color: rgb(229, 226, 224);
+}
+
+.wp-block-query ul.columns-3 .wp-block-post-title a:hover {
+	border-bottom: 2px solid;
+	border-color:#31261d;
+	color: #31261d;
+}
+
+.tribe-events-series-relationship-single-marker__title.tribe-common-cta--alt:hover {
+  border: none;
+}
+
+.single-tribe_event_series .breadcrumbs {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+.tribe-common-h8.tribe-common-h7--min-medium.tribe-events-pro-summary__event-title {
+ font-family: gentona-bold,system-ui,BlinkMacSystemFont,-apple-system,Segoe UI,sans-serif;
+  font-weight: 700;
+}
+
+.tribe-common-b2.tribe-events-widget-events-list__event-venue a,
+.tribe-events-pro-summary__event-title-link.tribe-common-anchor-thin {
+	 font-family: gentona-semibold,system-ui,BlinkMacSystemFont,-apple-system,Segoe UI,sans-serif;
+  font-weight: 600;
+	font-size: 1rem;
+  border-bottom-width: 2px;
+  border-color: rgb(229 226 224/var(--tw-border-opacity));
+  color: rgb(0 45 114/var(--tw-text-opacity)) !important;
+  text-decoration-line: none !important;
+  transition-duration: .2s !important;
+  transition-property: color,background-color,border-color,text-decoration-color,fill,stroke !important;
+  transition-timing-function: cubic-bezier(.4,0,.2,1) !important;
+}
+
+.tribe-common-b2.tribe-events-widget-events-list__event-venue a:hover{
+	border-bottom-width: 2px !important;
+  border-color: rgb(74 72 76/var(--tw-border-opacity)) !important;
+  border-style: solid !important;
+  color: rgb(49 38 29/var(--tw-text-opacity)) !important;
+}
+
+@media only screen and (min-width: 768px) {
+  #primary-menu > li {
+    line-height: 1.5;
+    padding: .375rem .25rem;
+  }
+	#primary-menu button.dropdown-toggle {
+		margin-left: 0;
+		padding:0rem;
+	}
+	.main-navigation .nav-primary ul.menu >  li.menu-item:not(:last-child)::after {
+		margin-left: .5625rem;
+		margin-right: .42rem;
+	}
+}
+
+
+@media only screen and (min-width: 768px) and (max-width: 1535px) { 
+	.main-navigation li > a, .main-navigation ul li a {
+		font-size: 1rem;
+	}
+		#primary-menu button.dropdown-toggle {
+		padding:0rem;
+	}
+}
+
+@media only screen and (max-width: 900px) {
+	.wp-block-query ul.columns-3 {
+ 		grid-template-columns: repeat(1, 1fr);
+	}
+}
+
+@media (min-width: 1280px) {
+  .entry-content .wp-block-query.alignwide.is-layout-flow.wp-block-query-is-layout-flow {
+		margin-left: 0rem;
+    max-width: 100%;
+    width: 100%;
+  }
+}	
