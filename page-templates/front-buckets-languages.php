@@ -37,9 +37,9 @@ get_header();
 			$news_quantity = get_field( 'homepage_news_posts', 'option' );
 			?>
 
-		<div class="divider div-transparent div-dot  my-12"></div>
+		<div class="mt-2 mb-4 relative h-1 pb-4 after:absolute after:bg-[rgb(229_226_224_/_var(--tw-bg-opacity,1))] after:border-[rgb(49_38_29_/_var(--tw-border-opacity,1))] after:absolute after:z-[1] after:top-[-9px] after:left-[calc(50%_-_9px)] after:w-[18px] after:h-[18px] after:border after:shadow-[inset_0_0_0_2px_#fefefe,0_0_0_4px_#fefefe] after:rounded-[50%] after:border-solid; before:absolute before:w-[90%] before:h-px before:bg-[linear-gradient(_to_right,transparent,rgb(49,38,29),transparent_)] before:top-0 before:inset-x-[5%]"></div>
 
-		<div class="news-section px-2 sm:px-0">
+		<div class="news-section px-2 sm:px-0 py-12">
 			<div class="prose sm:prose lg:prose-lg xl:prose-xl mx-auto">
 				<div class="flex flex-wrap justify-between px-4 lg:px-2">
 					<div>

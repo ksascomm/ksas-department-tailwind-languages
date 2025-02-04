@@ -72,7 +72,7 @@ if ( ! empty( $studyfield_response ) ) :
 			the_post_thumbnail(
 				'full',
 				array(
-					'class' => 'h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full',
+					'class' => '!mt-0 h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full',
 				)
 			);
 			?>
@@ -83,7 +83,7 @@ if ( ! empty( $studyfield_response ) ) :
 <?php
 if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_languages' ) ) :
 	?>
-	<div class="container">
+	<div class="container lg:max-xl:px-8 pt-6 pb-12">
 	<?php
 	if ( have_rows( 'explore_the_department_languages' ) ) :
 		$count = count( get_field( 'explore_the_department_languages' ) );
@@ -91,8 +91,8 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 		<?php $heading = get_field( 'buckets_heading_languages' ); ?>
 		<!--Print Heading if there-->
 		<?php if ( $heading ) : ?>
-			<div class="px-8 mt-12 xl:mt-18 mb-4">
-				<h2 class="!my-0  mx-auto font-semi font-semibold"><?php echo esc_html( $heading ); ?></h2>
+			<div class="px-8 mt-14 mb-8">
+				<h2 class="!my-0 mx-auto font-semi font-semibold"><?php echo esc_html( $heading ); ?></h2>
 			</div>
 		<?php endif; ?>
 		<!--Show Columns Dynamically-->
