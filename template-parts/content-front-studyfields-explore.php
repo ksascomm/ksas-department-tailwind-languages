@@ -35,8 +35,12 @@ if ( ! empty( $studyfield_response ) ) :
 
 	<?php
 	foreach ( $studyfield_response as $studyfield_data ) :
-		$studyfield_tagline = $studyfield_data->post_meta_fields->ecpt_headline[0];
-		$studyfield_degrees = $studyfield_data->post_meta_fields->ecpt_degreesoffered[0];
+		if ( ! empty( $studyfield_data->post_meta_fields->ecpt_headline[0] ) ) {
+			$studyfield_tagline = $studyfield_data->post_meta_fields->ecpt_headline[0];
+		}
+		if ( ! empty( $studyfield_data->post_meta_fields->ecpt_degreesoffered[0] ) ) {
+			$studyfield_degrees = $studyfield_data->post_meta_fields->ecpt_degreesoffered[0];
+		}
 	endforeach;
 	?>
 <?php endif; ?>
@@ -66,13 +70,13 @@ if ( ! empty( $studyfield_response ) ) :
 			$random_img_alt   = $random_images[0]['homepage_hero_image']['alt'];
 			$random_img_title = $random_images[0]['homepage_hero_image']['title'];
 			?>
-			<img class="!mt-0 h-56 w-full object-cover sm:h-72 lg:w-full lg:h-full slide-<?php echo esc_html( $random_img_title ); ?>" src="<?php echo esc_url( $random_img_url ); ?>" alt="<?php echo esc_html( $random_img_alt ); ?>" />
+			<img class="mt-0! h-56 w-full object-cover sm:h-72 lg:w-full lg:h-full slide-<?php echo esc_html( $random_img_title ); ?>" src="<?php echo esc_url( $random_img_url ); ?>" alt="<?php echo esc_html( $random_img_alt ); ?>" />
 		<?php else : ?>
 			<?php
 			the_post_thumbnail(
 				'full',
 				array(
-					'class' => '!mt-0 h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full',
+					'class' => 'mt-0! h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full',
 				)
 			);
 			?>
@@ -92,7 +96,7 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 		<!--Print Heading if there-->
 		<?php if ( $heading ) : ?>
 			<div class="px-8 mt-14 mb-8">
-				<h2 class="!my-0 mx-auto font-semi font-semibold"><?php echo esc_html( $heading ); ?></h2>
+				<h2 class="my-0! mx-auto font-semi font-semibold"><?php echo esc_html( $heading ); ?></h2>
 			</div>
 		<?php endif; ?>
 		<!--Show Columns Dynamically-->
@@ -115,13 +119,13 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 				<?php
 				$image = get_sub_field( 'explore_bucket_image' );
 				echo wp_get_attachment_image( $image['ID'], 'full', false, array( 'class' => 'lg:blur-[1px] w-full' ) );
-				 ?>
+				?>
 				<div class="p-6 bucket-text lg:top-0 lg:right-0 lg:left-0 lg:bottom-0 lg:inset-0 lg:absolute">
 			<?php else : ?>
 			<div class="p-2">
 				<div class="h-full rounded-lg field mb-4 px-6 py-4 overflow-hidden bg-grey-lightest grey-card-outline">
-			<?php endif;?>
-					<h3 class="text-2xl 2xl:text-3xl font-semi font-semibold !mt-2">
+			<?php endif; ?>
+					<h3 class="text-2xl 2xl:text-3xl font-semi font-semibold mt-2!">
 						<?php if ( get_sub_field( 'explore_bucket_link' ) ) : ?>
 							<a href="<?php the_sub_field( 'explore_bucket_link' ); ?>">
 								<?php the_sub_field( 'explore_bucket_heading' ); ?>
@@ -133,14 +137,14 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 					<p class="leading-normal text-lg 2xl:text-xl tracking-wide font-light">
 						<?php the_sub_field( 'explore_bucket_text' ); ?>
 					</p>
-					<?php if ( get_sub_field( 'major' ) == 1 ||  get_sub_field( 'minor' ) == 1 ) : ?>
+					<?php if ( get_sub_field( 'major' ) == 1 || get_sub_field( 'minor' ) == 1 ) : ?>
 						<ul class="degrees">
 						<?php if ( get_sub_field( 'major' ) == 1 ) : ?>
 							<li class="degree on major">Major</li>
-						<?php endif;?>
+						<?php endif; ?>
 						<?php if ( get_sub_field( 'minor' ) == 1 ) : ?>
 							<li class="degree on minor">Minor</li>
-						<?php endif;?>
+						<?php endif; ?>
 						<?php $graduate_degree_checked_options = get_sub_field( 'graduate_degree' ); ?>
 						<?php if ( $graduate_degree_checked_options ) : ?>
 							<?php foreach ( $graduate_degree_checked_options as $graduate_degree_checked_option ) : ?>
@@ -148,7 +152,7 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 							<?php endforeach; ?>
 						<?php endif; ?>
 						</ul>
-					<?php endif;?>
+					<?php endif; ?>
 				</div>
 			</div>
 		<?php endwhile; ?>

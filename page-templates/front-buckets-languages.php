@@ -33,7 +33,7 @@ get_header();
 		<?php
 		if ( get_field( 'show_homepage_news_feed', 'option' ) ) :
 			// If ACF Conditional is YES, display news feed.
-			$heading = get_field( 'homepage_news_header', 'option' );
+			$heading       = get_field( 'homepage_news_header', 'option' );
 			$news_quantity = get_field( 'homepage_news_posts', 'option' );
 			?>
 
@@ -43,10 +43,10 @@ get_header();
 			<div class="prose sm:prose lg:prose-lg xl:prose-xl mx-auto">
 				<div class="flex flex-wrap justify-between px-4 lg:px-2">
 					<div>
-						<h2 class="pb-4 md:pb-0 !my-0"><?php echo esc_html( $heading ); ?></h2>
+						<h2 class="pb-4 md:pb-0 my-0!"><?php echo esc_html( $heading ); ?></h2>
 					</div>
 					<div>
-						<a class="not-prose bg-blue text-white inline-flex py-2 px-3 text-base items-center !border-none hover:text-primary hover:bg-blue-light" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">
+						<a class="not-prose bg-blue text-white inline-flex py-2 px-3 text-base items-center border-none! hover:text-primary hover:bg-blue-light" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">
 							View All Posts&nbsp;<span class="fa-solid fa-circle-chevron-right" aria-hidden="true"></span></a>
 					</div>
 				</div>

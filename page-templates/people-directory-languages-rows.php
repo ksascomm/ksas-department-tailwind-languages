@@ -42,7 +42,7 @@ $program_slug = get_the_program_slug( $post );
 						'order'      => 'ASC',
 						'hide_empty' => true,
 						'exclude'    => $ids_to_exclude,
-						'filter'         => $program_slug,
+						'filter'     => $program_slug,
 					)
 				);
 				?>
@@ -51,7 +51,7 @@ $program_slug = get_the_program_slug( $post );
 			<div class="flex flex-col lg:flex-row justify-start">
 			
 				<?php foreach ( $faculty_titles as $faculty_title ) : ?>
-					<button class="all button bg-blue text-white text-lg hover:bg-blue-light hover:text-primary p-2 my-2 md:my-0" href="javascript:void(0)" data-filter=".<?php echo esc_html( $faculty_title->slug ); ?>" class="selected"><?php echo esc_html( $faculty_title->name ); ?></button>
+					<button class="all button bg-blue text-white text-lg hover:bg-blue-light hover:text-primary p-2 my-2 md:my-0 mx-1 text-center font-semi font-semibold align-bottom leading-tight text-white border-b-0 capitalize" href="javascript:void(0)" data-filter=".<?php echo esc_html( $faculty_title->slug ); ?>" class="selected"><?php echo esc_html( $faculty_title->name ); ?></button>
 				<?php endforeach; ?>
 				
 			</div>

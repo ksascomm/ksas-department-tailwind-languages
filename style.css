@@ -5,7 +5,7 @@ Description:  KSAS Department Tailwind Child Theme
 Author:       KSAS Communications
 Author URI:   https://github.com/ksascomm
 Template:     ksas-department-tailwind
-Version:      3.0
+Version:      4.0
 License:      GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  ksas-department-tailwind
@@ -15,7 +15,7 @@ Text Domain:  ksas-department-tailwind
 	max-width: 112ch;
 }
 
-.front.prose .grey-card-outline h3 a:hover, {
+.front.prose .grey-card-outline h3 a:hover {
 	color: #31261d;
 }
 
@@ -167,10 +167,15 @@ ul.degrees {
 	padding-left: .5em;
 }
 
+.wp-block-query ul.columns-3 .wp-block-post-featured-image {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
 .wp-block-post-title {
 	font-size: 1.5rem;
-  line-height: 1.2;
-  margin: 0;
+	line-height: 1.2;
+	margin: 0;
 }
 
 .wp-block-post-title a {
@@ -190,6 +195,29 @@ ul.degrees {
 	object-position: 0% 20%;
 }
 
+.wp-block-buttons.is-content-justification-right.is-layout-flex.wp-container-core-buttons-is-layout-1.wp-block-buttons-is-layout-flex .wp-block-button__link.wp-element-button {
+	--tw-bg-opacity: 1;
+  --tw-text-opacity: 1;
+  background-color: rgb(0 45 114/var(--tw-bg-opacity,1));
+  border-width: 0;
+  color: rgb(254 254 254/var(--tw-text-opacity,1));
+  padding: .5rem .75rem;
+  --tw-border-opacity: 1;
+  border-bottom-width: 2px;
+  border-color: rgb(229 226 224/var(--tw-border-opacity,1));
+  text-decoration-line: none;
+  transition-duration: .2s;
+  transition-property: color,background-color,border-color,text-decoration-color,fill,stroke;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  border-radius: 0;
+}
+
+.wp-block-buttons.is-content-justification-right.is-layout-flex.wp-container-core-buttons-is-layout-1.wp-block-buttons-is-layout-flex .wp-block-button__link.wp-element-button:hover {
+	--tw-bg-opacity: 1;
+	background-color: rgb(104 172 229/var(--tw-bg-opacity,1));
+	border: none;
+	color: #31261d;
+  }
 
 .page-id-11  #primary-menu > .menu-item.current-menu-parent > a {
 	box-shadow: none;
@@ -302,4 +330,8 @@ ul.degrees {
     max-width: 100%;
     width: 100%;
   }
-}	
+}
+
+.below-news-widget-section {
+	padding-bottom: 0;
+}

@@ -8,7 +8,7 @@
  */
 
 ?>
-<div class="alignfull featured-image-area front-featured-image-area !mt-0" role="banner">
+<div class="alignfull featured-image-area front-featured-image-area mt-0!" role="banner">
 	<div class="flex bg-white h-20 lg:h-80">
 		<div class="flex lg:items-center lg:justify-start xl:justify-center text-left px-6 sm:w-full lg:w-2/5">
 			<h1 class="tracking-tight leading-10 sm:leading-none lg:text-4xl xl:text-[44px] lg:pl-2 xl:pl-0 py-8">
@@ -17,7 +17,7 @@
 				$program_name = get_the_program_name( $post );
 				if ( $program_name == 'French' || $program_name == 'German' || $program_name == 'Hebrew and Yiddish' || $program_name == 'Italian' || $program_name == 'Portuguese' || $program_name == 'Spanish' || $program_name == 'Spanish and Portuguese' ) :
 					?>
-				<br><small class="font-bold font-heavy !text-2xl"><?php echo esc_html( $program_name . ' Program' ); ?></small>
+				<br><small class="font-bold font-heavy text-2xl!"><?php echo esc_html( $program_name . ' Program' ); ?></small>
 				<?php endif; ?>
 			</h1>
 		</div>
