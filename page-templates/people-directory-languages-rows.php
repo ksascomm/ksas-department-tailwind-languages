@@ -93,7 +93,7 @@ $program_slug = get_the_program_slug( $post );
 				if ( $people_query->have_posts() ) :
 					?>
 					<div class="item pt-2 w-full role-title quicksearch-match <?php echo esc_html( $position->slug ); ?>">
-						<h3 class="uppercase"><?php echo esc_html( $position_name ); ?></h3>
+						<h2 class="uppercase my-4! after:block after:w-1/2 after:pt-3 after:border-b-4 after:border-blue content-[''];"><?php echo esc_html( $position_name ); ?></h2>
 					</div>
 					<?php
 					while ( $people_query->have_posts() ) :
