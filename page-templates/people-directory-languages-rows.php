@@ -9,7 +9,6 @@
 
 get_header();
 $program_slug = get_the_program_slug( $post );
-
 ?>
 
 <main id="site-content" class="site-main prose sm:prose lg:prose-lg mx-auto">
@@ -25,10 +24,10 @@ $program_slug = get_the_program_slug( $post );
 		<?php
 				$ids_to_exclude            = array();
 				$faculty_titles_to_exclude = get_terms(
-					'role',
 					array(
-						'fields' => 'ids',
-						'slug'   => array( 'graduate', 'job-market-candidate', 'graduate-student', 'research' ),
+						'taxonomy' => 'role',
+						'fields'   => 'ids',
+						'slug'     => array( 'graduate', 'job-market-candidate', 'graduate-student', 'research' ),
 					)
 				);
 				// Convert the role slug to corresponding IDs.
@@ -47,28 +46,26 @@ $program_slug = get_the_program_slug( $post );
 				);
 				?>
 			<?php if ( count( $faculty_titles ) > 1 ) : ?>	
-			<h3>Filter by Position or Title:</h3>
-			<div class="flex flex-col lg:flex-row justify-start">
-			
+			<fieldset class="flex flex-col justify-start lg:flex-row">
+				<legend class="px-2 mb-2 text-xl font-bold font-heavy">Filter by Position or Title:</legend>
 				<?php foreach ( $faculty_titles as $faculty_title ) : ?>
-					<button class="all button bg-blue text-white text-lg hover:bg-blue-light hover:text-primary p-2 my-2 md:my-0 mx-1 text-center font-semi font-semibold align-bottom leading-tight text-white border-b-0 capitalize" href="javascript:void(0)" data-filter=".<?php echo esc_html( $faculty_title->slug ); ?>" class="selected"><?php echo esc_html( $faculty_title->name ); ?></button>
+					<button class="p-2 mx-1 my-2 text-lg font-semibold leading-tight text-center text-white capitalize align-bottom border-b-0 all button bg-blue hover:bg-blue-light hover:text-primary xl:my-0 font-semi" href="javascript:void(0)" data-filter=".<?php echo esc_html( $faculty_title->slug ); ?>"><?php echo esc_html( $faculty_title->name ); ?></button>
 				<?php endforeach; ?>
 				
-			</div>
+			</fieldset>
 			<?php endif; ?>
-			<h4 class="mt-4">
-				<label class="heading" for="id_search">Search by name, title, or research interests:</label>
-			</h4>
-			<div class="w-auto search-form my-2 px-2">
-				<input class="quicksearch ml-2 p-2 form-input w-full md:w-1/2" type="search" name="search" id="id_search" aria-label="Search Fields of Study" placeholder="Enter description keyword"/>
-			</div>
+			<fieldset class="w-auto px-2 my-2 search-form">
+				<legend class="px-2 mt-4 mb-2 text-xl font-bold font-heavy">Search by name, title, or research interests:</legend>
+				<label class="sr-only" for="id_search">Enter term</label>
+				<input class="w-full p-2 ml-2 quicksearch form-input md:w-1/2" type="text" name="search" id="id_search" aria-label="Search Form" placeholder="Enter description keyword"/>
+			</fieldset>
 		</div>
 		<div class="mt-8 ml-4 mr-2" id="isotope-list" >
 			<div class="flex flex-wrap">
 		<?php
 			$positions        = get_terms(
-				'role',
 				array(
+					'taxonomy'   => 'role',
 					'orderby'    => 'ID',
 					'order'      => 'ASC',
 					'hide_empty' => true,

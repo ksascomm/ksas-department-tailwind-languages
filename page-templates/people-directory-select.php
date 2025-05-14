@@ -23,9 +23,8 @@ get_header();
 			<div class="flex flex-wrap">
 		<?php
 
-		$topics = get_field( 'role_select' );
+		$topics       = get_field( 'role_select' );
 		$program_slug = get_the_program_slug( $post );
-		print_r ($program_people_select);
 		if ( $topics ) {
 			if ( ! is_array( $topics ) ) {
 				$topics = array( $topics );
