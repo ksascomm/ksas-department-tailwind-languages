@@ -96,7 +96,7 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 		<!--Print Heading if there-->
 		<?php if ( $heading ) : ?>
 			<div class="px-8 mt-14 mb-8">
-				<h2 class="my-0! mx-auto font-semi font-semibold"><?php echo esc_html( $heading ); ?></h2>
+				<h2 class="my-0! mx-auto font-heavy font-bold"><?php echo esc_html( $heading ); ?></h2>
 			</div>
 		<?php endif; ?>
 		<!--Show Columns Dynamically-->
@@ -125,7 +125,7 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 			<div class="p-2">
 				<div class="h-full rounded-lg field mb-4 px-6 py-4 overflow-hidden bg-grey-lightest grey-card-outline">
 			<?php endif; ?>
-					<h3 class="text-2xl 2xl:text-3xl font-semi font-semibold mt-2!">
+					<h3 class="text-2xl 2xl:text-3xl font-heavy font-bold mt-2!">
 						<?php if ( get_sub_field( 'explore_bucket_link' ) ) : ?>
 							<a href="<?php the_sub_field( 'explore_bucket_link' ); ?>">
 								<?php the_sub_field( 'explore_bucket_heading' ); ?>

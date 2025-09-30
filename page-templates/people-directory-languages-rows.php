@@ -49,7 +49,7 @@ $program_slug = get_the_program_slug( $post );
 			<fieldset class="flex flex-col justify-start lg:flex-row">
 				<legend class="px-2 mb-2 text-xl font-bold font-heavy">Filter by Position or Title:</legend>
 				<?php foreach ( $faculty_titles as $faculty_title ) : ?>
-					<button class="p-2 mx-1 my-2 text-lg font-semibold leading-tight text-center text-white capitalize align-bottom border-b-0 all button bg-blue hover:bg-blue-light hover:text-primary xl:my-0 font-semi" href="javascript:void(0)" data-filter=".<?php echo esc_html( $faculty_title->slug ); ?>"><?php echo esc_html( $faculty_title->name ); ?></button>
+					<button class="p-2 mx-1 my-2 text-lg font-heavy font-bold leading-tight text-center text-white capitalize align-bottom border-b-0 all button bg-blue hover:bg-blue-light hover:text-primary xl:my-0" href="javascript:void(0)" data-filter=".<?php echo esc_html( $faculty_title->slug ); ?>"><?php echo esc_html( $faculty_title->name ); ?></button>
 				<?php endforeach; ?>
 				
 			</fieldset>

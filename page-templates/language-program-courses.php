@@ -14,25 +14,25 @@ get_header();
 	require get_stylesheet_directory() . '/lib/Zebra_cURL.php';
 
 	// Set query string variables.
-	$department_unclean         = 'Modern Languages and Literatures';
-	$department                 = str_replace( ' ', '%20', $department_unclean );
-	$department                 = str_replace( '&', '%26', $department );
-	$program_slug               = get_the_program_slug( $post );
-	$subdepartment_unclean      = $program_slug;
+	$department_unclean           = 'Modern Languages and Literatures';
+	$department                   = str_replace( ' ', '%20', $department_unclean );
+	$department                   = str_replace( '&', '%26', $department );
+	$program_slug                 = get_the_program_slug( $post );
+	$subdepartment_unclean        = $program_slug;
 	$subdepartment_select         = get_field( 'program_course_select' );
 	$subdepartment_select_unclean = $subdepartment_select->name;
 	$subdepartment                = str_replace( ' ', '%20', $subdepartment_select_unclean );
 	$subdepartment                = str_replace( '-', '%20', $subdepartment );
 	$subdepartment                = str_replace( '&', '%26', $subdepartment );
-	$fall                       = 'fall%202024';
-	$summer                     = 'summer%202024';
-	$spring                     = 'spring%202025';
-	$open                       = 'open';
-	$approval                   = 'approval%20required';
-	$closed                     = 'closed';
-	$waitlist                   = 'waitlist%20only';
-	$reserved_open              = 'reserved%20open';
-	$key                        = '0jCaUO1bHwbG1sFEKQd3iXgBgxoDUOhR';
+	$fall                         = 'fall%202025';
+	$summer                       = 'summer%202024';
+	$spring                       = 'spring%202025';
+	$open                         = 'open';
+	$approval                     = 'approval%20required';
+	$closed                       = 'closed';
+	$waitlist                     = 'waitlist%20only';
+	$reserved_open                = 'reserved%20open';
+	$key                          = '0jCaUO1bHwbG1sFEKQd3iXgBgxoDUOhR';
 
 	// Create first Zebra Curl class.
 	$course_curl = new Zebra_cURL();
@@ -45,52 +45,53 @@ get_header();
 	// Cache for 14 days.
 	$course_curl->cache( WP_CONTENT_DIR . '/sis-cache/' . $subdepartment, 1209600 );
 
-// Create API Url calls.
-$courses_fall_url = 'https://sis.jhu.edu/api/classes?key=' . $key . '&School=Krieger%20School%20of%20Arts%20and%20Sciences&Term=' . $spring . '&Term=' . $fall . '&Department=AS%20' . $department . '&SubDepartment=' . $subdepartment . '&status=' . $open . '&status=' . $approval . '&status=' . $waitlist . '&status=' . $reserved_open;
+	// Create API Url calls.
+	$courses_fall_url = 'https://sis.jhu.edu/api/classes?key=' . $key . '&School=Krieger%20School%20of%20Arts%20and%20Sciences&Term=' . $spring . '&Term=' . $fall . '&Department=AS%20' . $department . '&SubDepartment=' . $subdepartment;
 
-$course_data = array();
-$output      = '';
+	// print_r( $courses_fall_url );
 
-// get the first set of data.
-$course_curl->get(
-	$courses_fall_url,
-	function( $result ) use ( &$course_data ) {
+	$course_data = array();
+	$output      = '';
 
-		$key = '0jCaUO1bHwbG1sFEKQd3iXgBgxoDUOhR';
+	// get the first set of data.
+	$course_curl->get(
+		$courses_fall_url,
+		function ( $result ) use ( &$course_data ) {
 
-		if ( ( is_array( $result ) && ! empty( $result ) ) || is_object( $result ) ) {
+			$key = '0jCaUO1bHwbG1sFEKQd3iXgBgxoDUOhR';
 
-			$result->body = ! is_array( $result->body ) ? json_decode( html_entity_decode( $result->body ) ) : $result->body;
+			if ( ( is_array( $result ) && ! empty( $result ) ) || is_object( $result ) ) {
 
-			foreach ( $result->body as $course ) {
+				$result->body = ! is_array( $result->body ) ? json_decode( html_entity_decode( $result->body ) ) : $result->body;
 
-				$section = $course->{'SectionName'};
-				$level   = $course->{'Level'};
+				foreach ( $result->body as $course ) {
 
-				if (
-					strpos( $level, 'Graduate' ) !== false
-				|| strpos( $level, 'Undergraduate' ) !== false
-				|| ( $level === '' ) !== false
-				) {
-					$number       = $course->{'OfferingName'};
-					$clean_number = preg_replace( '/[^A-Za-z0-9\-]/', '', $number );
-					$dirty_term   = $course->{'Term_IDR'};
-					$clean_term   = str_replace( ' ', '%20', $dirty_term );
-					$details_url  = 'https://sis.jhu.edu/api/classes/' . $clean_number . $section . '/' . $clean_term . '?key=' . $key;
+					$section = $course->{'SectionName'};
+					$level   = $course->{'Level'};
 
-					// add to array!
-					$course_data[] = $details_url;
+					if (
+						strpos( $level, 'Graduate' ) !== false
+					|| strpos( $level, 'Undergraduate' ) !== false
+					|| ( $level === '' ) !== false
+					) {
+						$number       = $course->{'OfferingName'};
+						$clean_number = preg_replace( '/[^A-Za-z0-9\-]/', '', $number );
+						$dirty_term   = $course->{'Term_IDR'};
+						$clean_term   = str_replace( ' ', '%20', $dirty_term );
+						$details_url  = 'https://sis.jhu.edu/api/classes/' . $clean_number . $section . '/' . $clean_term . '?key=' . $key;
+
+						// add to array!
+						$course_data[] = $details_url;
+					}
 				}
 			}
 		}
-
-	}
-);
+	);
 
 	// Now that we have the first set of data.
 	$course_curl->get(
 		$course_data,
-		function( $result ) use ( &$output ) {
+		function ( $result ) use ( &$output ) {
 
 			$result->body = ! is_array( $result->body ) ? json_decode( html_entity_decode( $result->body ) ) : $result->body;
 
