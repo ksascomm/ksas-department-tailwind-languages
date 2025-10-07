@@ -273,9 +273,9 @@ ul.degrees {
 
 .tribe-common-b2.tribe-events-widget-events-list__event-venue a,
 .tribe-events-pro-summary__event-title-link.tribe-common-anchor-thin {
-  font-family: "worksans-semibold", "system-ui", "BlinkMacSystemFont", "-apple-system", "Segoe UI", "sans-serif";
-  font-weight: 600;
-	font-size: 1rem;
+  font-family: "worksans-bold", "system-ui", "BlinkMacSystemFont", "-apple-system", "Segoe UI", "sans-serif";
+  font-weight: 700;
+  font-size: 1rem;
   border-bottom-width: 2px;
   border-color: rgb(229 226 224/var(--tw-border-opacity));
   color: rgb(0 45 114/var(--tw-text-opacity)) !important;
