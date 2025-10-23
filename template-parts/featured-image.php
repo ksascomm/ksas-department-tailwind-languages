@@ -36,15 +36,15 @@
 					// Otherwise, randomly display one of the following images.
 				$theme = get_template_directory_uri();
 				$bg    = array(
-					$theme . '/dist/images/header-images/deptThemeStandard01.jpg',
-					$theme . '/dist/images/header-images/deptThemeStandard02.jpg',
-					$theme . '/dist/images/header-images/deptThemeStandard04.jpg',
-					$theme . '/dist/images/header-images/deptThemeStandard05.jpg',
-					$theme . '/dist/images/header-images/deptThemeStandard06.jpg',
-					$theme . '/dist/images/header-images/deptThemeStandard07.jpg',
-					$theme . '/dist/images/header-images/deptThemeStandard08.jpg',
-					$theme . '/dist/images/header-images/deptThemeStandard09.jpg',
-					$theme . '/dist/images/header-images/deptThemeStandard10.jpg',
+					$theme . '/dist/images/header-images/interior-banner-1.jpg',
+					$theme . '/dist/images/header-images/interior-banner-2.jpg',
+					$theme . '/dist/images/header-images/interior-banner-3.jpg',
+					$theme . '/dist/images/header-images/interior-banner-4.jpg',
+					$theme . '/dist/images/header-images/interior-banner-5.jpg',
+					$theme . '/dist/images/header-images/interior-banner-6.jpg',
+					$theme . '/dist/images/header-images/interior-banner-7.jpg',
+					$theme . '/dist/images/header-images/interior-banner-8.jpg',
+					$theme . '/dist/images/header-images/interior-banner-9.jpg',
 				);
 
 				$i              = wp_rand( 0, count( $bg ) - 1 ); // Generate random number size of the array.
