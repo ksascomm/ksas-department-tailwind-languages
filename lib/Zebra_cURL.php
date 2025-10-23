@@ -12,8 +12,8 @@
  *  Read more {@link https://github.com/stefangabos/Zebra_cURL/ here}.
  *
  *  @author     Stefan Gabos <contact@stefangabos.ro>
- *  @version    1.6.3 (last revision: September 14, 2024)
- *  @copyright  © 2013 - 2024 Stefan Gabos
+ *  @version    1.7.0 (last revision: January 30, 2025)
+ *  @copyright  © 2013 - 2025 Stefan Gabos
  *  @license    https://www.gnu.org/licenses/lgpl-3.0.txt GNU LESSER GENERAL PUBLIC LICENSE
  *  @package    Zebra_cURL
  */
@@ -133,105 +133,108 @@ class Zebra_cURL {
 	 *  @access private
 	 */
 	private $_response_messages = array(
-		0  => 'CURLE_OK',
-		1  => 'CURLE_UNSUPPORTED_PROTOCOL',
-		2  => 'CURLE_FAILED_INIT',
-		3  => 'CURLE_URL_MALFORMAT',
-		4  => 'CURLE_NOT_BUILT_IN',
-		5  => 'CURLE_COULDNT_RESOLVE_PROXY',
-		6  => 'CURLE_COULDNT_RESOLVE_HOST',
-		7  => 'CURLE_COULDNT_CONNECT',
-		8  => 'CURLE_WEIRD_SERVER_REPLY',
-		9  => 'CURLE_REMOTE_ACCESS_DENIED',
-		10 => 'CURLE_FTP_ACCEPT_FAILED',
-		11 => 'CURLE_FTP_WEIRD_PASS_REPLY',
-		12 => 'CURLE_FTP_ACCEPT_TIMEOUT',
-		13 => 'CURLE_FTP_WEIRD_PASV_REPLY',
-		14 => 'CURLE_FTP_WEIRD_227_FORMAT',
-		15 => 'CURLE_FTP_CANT_GET_HOST',
-		16 => 'CURLE_HTTP2',
-		17 => 'CURLE_FTP_COULDNT_SET_TYPE',
-		18 => 'CURLE_PARTIAL_FILE',
-		19 => 'CURLE_FTP_COULDNT_RETR_FILE',     // NOT USED
-		20 => 'CURLE_OBSOLETE20',
-		21 => 'CURLE_QUOTE_ERROR',
-		22 => 'CURLE_HTTP_RETURNED_ERROR',
-		23 => 'CURLE_WRITE_ERROR',               // NOT USED
-		24 => 'CURLE_OBSOLETE24',
-		25 => 'CURLE_UPLOAD_FAILED',
-		26 => 'CURLE_READ_ERROR',
-		27 => 'CURLE_OUT_OF_MEMORY',
-		28 => 'CURLE_OPERATION_TIMEDOUT',        // NOT USED
-		29 => 'CURLE_OBSOLETE29',
-		30 => 'CURLE_FTP_PORT_FAILED',
-		31 => 'CURLE_FTP_COULDNT_USE_REST',      // NOT USED
-		32 => 'CURLE_OBSOLETE32',
-		33 => 'CURLE_RANGE_ERROR',
-		34 => 'CURLE_HTTP_POST_ERROR',
-		35 => 'CURLE_SSL_CONNECT_ERROR',
-		36 => 'CURLE_BAD_DOWNLOAD_RESUME',
-		37 => 'CURLE_FILE_COULDNT_READ_FILE',
-		38 => 'CURLE_LDAP_CANNOT_BIND',
-		39 => 'CURLE_LDAP_SEARCH_FAILED',        // NOT USED
-		40 => 'CURLE_OBSOLETE40',                // NOT USED SINCE curl 7.53.0
-		41 => 'CURLE_FUNCTION_NOT_FOUND',
-		42 => 'CURLE_ABORTED_BY_CALLBACK',
-		43 => 'CURLE_BAD_FUNCTION_ARGUMENT',     // NOT USED
-		44 => 'CURLE_OBSOLETE44',
-		45 => 'CURLE_INTERFACE_FAILED',          // NOT USED
-		46 => 'CURLE_OBSOLETE46',
-		47 => 'CURLE_TOO_MANY_REDIRECTS',
-		48 => 'CURLE_UNKNOWN_OPTION',
-		49 => 'CURLE_SETOPT_OPTION_SYNTAX',      // NOT USED
-		50 => 'CURLE_OBSOLETE50',                // NOT USED
-		51 => 'CURLE_OBSOLETE51',
-		52 => 'CURLE_GOT_NOTHING',
-		53 => 'CURLE_SSL_ENGINE_NOTFOUND',
-		54 => 'CURLE_SSL_ENGINE_SETFAILED',
-		55 => 'CURLE_SEND_ERROR',
-		56 => 'CURLE_RECV_ERROR',                // NOT USED
-		57 => 'CURLE_OBSOLETE57',
-		58 => 'CURLE_SSL_CERTPROBLEM',
-		59 => 'CURLE_SSL_CIPHER',
-		60 => 'CURLE_PEER_FAILED_VERIFICATION',
-		61 => 'CURLE_BAD_CONTENT_ENCODING',      // NOT USED SINCE curl 7.82.0
-		62 => 'CURLE_OBSOLETE62',
-		63 => 'CURLE_FILESIZE_EXCEEDED',
-		64 => 'CURLE_USE_SSL_FAILED',
-		65 => 'CURLE_SEND_FAIL_REWIND',
-		66 => 'CURLE_SSL_ENGINE_INITFAILED',
-		67 => 'CURLE_LOGIN_DENIED',
-		68 => 'CURLE_TFTP_NOTFOUND',
-		69 => 'CURLE_TFTP_PERM',
-		70 => 'CURLE_REMOTE_DISK_FULL',
-		71 => 'CURLE_TFTP_ILLEGAL',
-		72 => 'CURLE_TFTP_UNKNOWNID',
-		73 => 'CURLE_REMOTE_FILE_EXISTS',
-		74 => 'CURLE_TFTP_NOSUCHUSER',
-		75 => 'CURLE_CONV_FAILED',               // NOT USED SINCE curl 7.82.0
-		76 => 'CURLE_OBSOLETE76',
-		77 => 'CURLE_SSL_CACERT_BADFILE',
-		78 => 'CURLE_REMOTE_FILE_NOT_FOUND',
-		79 => 'CURLE_SSH',
-		80 => 'CURLE_SSL_SHUTDOWN_FAILED',
-		81 => 'CURLE_AGAIN',
-		82 => 'CURLE_SSL_CRL_BADFILE',
-		83 => 'CURLE_SSL_ISSUER_ERROR',
-		84 => 'CURLE_FTP_PRET_FAILED',
-		85 => 'CURLE_RTSP_CSEQ_ERROR',
-		86 => 'CURLE_RTSP_SESSION_ERROR',
-		87 => 'CURLE_FTP_BAD_FILE_LIST',
-		88 => 'CURLE_CHUNK_FAILED',
-		89 => 'CURLE_NO_CONNECTION_AVAILABLE',
-		90 => 'CURLE_SSL_PINNEDPUBKEYNOTMATCH',
-		91 => 'CURLE_SSL_INVALIDCERTSTATUS',
-		92 => 'CURLE_HTTP2_STREAM',
-		93 => 'CURLE_RECURSIVE_API_CALL',
-		94 => 'CURLE_AUTH_ERROR',
-		95 => 'CURLE_HTTP3',
-		96 => 'CURLE_QUIC_CONNECT_ERROR',
-		97 => 'CURLE_PROXY',
-		98 => 'CURLE_SSL_CLIENTCERT',
+		0   => 'CURLE_OK',
+		1   => 'CURLE_UNSUPPORTED_PROTOCOL',
+		2   => 'CURLE_FAILED_INIT',
+		3   => 'CURLE_URL_MALFORMAT',
+		4   => 'CURLE_NOT_BUILT_IN',
+		5   => 'CURLE_COULDNT_RESOLVE_PROXY',
+		6   => 'CURLE_COULDNT_RESOLVE_HOST',
+		7   => 'CURLE_COULDNT_CONNECT',
+		8   => 'CURLE_WEIRD_SERVER_REPLY',
+		9   => 'CURLE_REMOTE_ACCESS_DENIED',
+		10  => 'CURLE_FTP_ACCEPT_FAILED',
+		11  => 'CURLE_FTP_WEIRD_PASS_REPLY',
+		12  => 'CURLE_FTP_ACCEPT_TIMEOUT',
+		13  => 'CURLE_FTP_WEIRD_PASV_REPLY',
+		14  => 'CURLE_FTP_WEIRD_227_FORMAT',
+		15  => 'CURLE_FTP_CANT_GET_HOST',
+		16  => 'CURLE_HTTP2',
+		17  => 'CURLE_FTP_COULDNT_SET_TYPE',
+		18  => 'CURLE_PARTIAL_FILE',
+		19  => 'CURLE_FTP_COULDNT_RETR_FILE',
+		20  => 'CURLE_OBSOLETE20',                 // NOT USED
+		21  => 'CURLE_QUOTE_ERROR',
+		22  => 'CURLE_HTTP_RETURNED_ERROR',
+		23  => 'CURLE_WRITE_ERROR',
+		24  => 'CURLE_OBSOLETE24',                 // NOT USED
+		25  => 'CURLE_UPLOAD_FAILED',
+		26  => 'CURLE_READ_ERROR',
+		27  => 'CURLE_OUT_OF_MEMORY',
+		28  => 'CURLE_OPERATION_TIMEDOUT',
+		29  => 'CURLE_OBSOLETE29',                 // NOT USED
+		30  => 'CURLE_FTP_PORT_FAILED',
+		31  => 'CURLE_FTP_COULDNT_USE_REST',
+		32  => 'CURLE_OBSOLETE32',                 // NOT USED
+		33  => 'CURLE_RANGE_ERROR',
+		34  => 'CURLE_HTTP_POST_ERROR',
+		35  => 'CURLE_SSL_CONNECT_ERROR',
+		36  => 'CURLE_BAD_DOWNLOAD_RESUME',
+		37  => 'CURLE_FILE_COULDNT_READ_FILE',
+		38  => 'CURLE_LDAP_CANNOT_BIND',
+		39  => 'CURLE_LDAP_SEARCH_FAILED',
+		40  => 'CURLE_OBSOLETE40',                 // NOT USED
+		41  => 'CURLE_FUNCTION_NOT_FOUND',         // NOT USED since with 7.53.0
+		42  => 'CURLE_ABORTED_BY_CALLBACK',
+		43  => 'CURLE_BAD_FUNCTION_ARGUMENT',
+		44  => 'CURLE_OBSOLETE44',                 // NOT USED
+		45  => 'CURLE_INTERFACE_FAILED',
+		46  => 'CURLE_OBSOLETE46',                 // NOT USED
+		47  => 'CURLE_TOO_MANY_REDIRECTS',
+		48  => 'CURLE_UNKNOWN_OPTION',
+		49  => 'CURLE_SETOPT_OPTION_SYNTAX',
+		50  => 'CURLE_OBSOLETE50',                 // NOT USED
+		51  => 'CURLE_OBSOLETE51',                 // NOT USED
+		52  => 'CURLE_GOT_NOTHING',
+		53  => 'CURLE_SSL_ENGINE_NOTFOUND',
+		54  => 'CURLE_SSL_ENGINE_SETFAILED',
+		55  => 'CURLE_SEND_ERROR',
+		56  => 'CURLE_RECV_ERROR',
+		57  => 'CURLE_OBSOLETE57',                 // NOT USED
+		58  => 'CURLE_SSL_CERTPROBLEM',
+		59  => 'CURLE_SSL_CIPHER',
+		60  => 'CURLE_PEER_FAILED_VERIFICATION',
+		61  => 'CURLE_BAD_CONTENT_ENCODING',
+		62  => 'CURLE_OBSOLETE62',                 // NOT USED since 7.82.0
+		63  => 'CURLE_FILESIZE_EXCEEDED',
+		64  => 'CURLE_USE_SSL_FAILED',
+		65  => 'CURLE_SEND_FAIL_REWIND',
+		66  => 'CURLE_SSL_ENGINE_INITFAILED',
+		67  => 'CURLE_LOGIN_DENIED',
+		68  => 'CURLE_TFTP_NOTFOUND',
+		69  => 'CURLE_TFTP_PERM',
+		70  => 'CURLE_REMOTE_DISK_FULL',
+		71  => 'CURLE_TFTP_ILLEGAL',
+		72  => 'CURLE_TFTP_UNKNOWNID',
+		73  => 'CURLE_REMOTE_FILE_EXISTS',
+		74  => 'CURLE_TFTP_NOSUCHUSER',
+		75  => 'CURLE_OBSOLETE75',                 // NOT USED since 7.82.0
+		76  => 'CURLE_OBSOLETE76',                 // NOT USED since 7.82.0
+		77  => 'CURLE_SSL_CACERT_BADFILE',
+		78  => 'CURLE_REMOTE_FILE_NOT_FOUND',
+		79  => 'CURLE_SSH',
+		80  => 'CURLE_SSL_SHUTDOWN_FAILED',
+		81  => 'CURLE_AGAIN',
+		82  => 'CURLE_SSL_CRL_BADFILE',
+		83  => 'CURLE_SSL_ISSUER_ERROR',
+		84  => 'CURLE_FTP_PRET_FAILED',
+		85  => 'CURLE_RTSP_CSEQ_ERROR',
+		86  => 'CURLE_RTSP_SESSION_ERROR',
+		87  => 'CURLE_FTP_BAD_FILE_LIST',
+		88  => 'CURLE_CHUNK_FAILED',
+		89  => 'CURLE_NO_CONNECTION_AVAILABLE',
+		90  => 'CURLE_SSL_PINNEDPUBKEYNOTMATCH',
+		91  => 'CURLE_SSL_INVALIDCERTSTATUS',
+		92  => 'CURLE_HTTP2_STREAM',
+		93  => 'CURLE_RECURSIVE_API_CALL',
+		94  => 'CURLE_AUTH_ERROR',
+		95  => 'CURLE_HTTP3',
+		96  => 'CURLE_QUIC_CONNECT_ERROR',
+		97  => 'CURLE_PROXY',
+		98  => 'CURLE_SSL_CLIENTCERT',
+		99  => 'CURLE_UNRECOVERABLE_POLL',
+		100 => 'CURLE_TOO_LARGE',
+		101 => 'CURLE_ECH_REQUIRED',
 	);
 
 	/**
@@ -242,6 +245,17 @@ class Zebra_cURL {
 	 *  @access private
 	 */
 	private $_scrape_result;
+
+	/**
+	 *  In PHP 8.4 CURLOPT_BINARYTRANSFER was deprecated and it had no effect since PHP 5.1.2
+	 *  see https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+	 *
+	 *  We're going to use this flag to add/remove the option where appropriate.
+	 *
+	 *  @var boolean
+	 *  @access private
+	 */
+	private $_use_binarytransfer = false;
 
 	/**
 	 *  Constructor of the class.
@@ -391,12 +405,18 @@ class Zebra_cURL {
 			$this->option( CURLOPT_SAFE_UPLOAD, true );
 		}
 
+		// for PHP versions lower than 5.1.2 we're still going to use CURLOPT_BINARYTRANSFER where appropriate.
+		// for versions of PHP newer than that, we're not going to use it at all
+		// see https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+		if ( version_compare( PHP_VERSION, '5.1.2', '<' ) && defined( 'CURLOPT_BINARYTRANSFER' ) ) {
+			$this->_use_binarytransfer = true;
+		}
+
 		// set defaults for accessing HTTPS servers
 		$this->ssl();
 
 		// caching is disabled by default
 		$this->cache( false );
-
 	}
 
 	/**
@@ -509,7 +529,6 @@ class Zebra_cURL {
 		} else {
 			$this->cache = false;
 		}
-
 	}
 
 	/**
@@ -550,7 +569,6 @@ class Zebra_cURL {
 				CURLOPT_COOKIEFILE => $path,  // for reading
 			)
 		);
-
 	}
 
 	/**
@@ -568,9 +586,12 @@ class Zebra_cURL {
 	 *
 	 *  ...and will unset the following options:
 	 *
-	 *  - `CURLOPT_BINARYTRANSFER`
 	 *  - `CURLOPT_HTTPGET`
 	 *  - `CURLOPT_FILE`
+	 *
+	 *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+	 *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+	 *      it has no effect and has been deprecated starting with PHP 8.4}.
 	 *
 	 *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
 	 *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -650,18 +671,19 @@ class Zebra_cURL {
 
 				// merge any custom options with the default ones
 				'options'   =>
+
 					( isset( $values['options'] ) ? $values['options'] : array() ) +
 					array(
-						CURLINFO_HEADER_OUT    => 1,
-						CURLOPT_CUSTOMREQUEST  => 'DELETE',
-						CURLOPT_HEADER         => 1,
-						CURLOPT_NOBODY         => 0,
-						CURLOPT_POST           => 0,
-						CURLOPT_POSTFIELDS     => isset( $values['data'] ) ? ( is_array( $values['data'] ) ? http_build_query( $values['data'], '', '&' ) : $values['data'] ) : '',
-						CURLOPT_BINARYTRANSFER => null,
-						CURLOPT_HTTPGET        => null,
-						CURLOPT_FILE           => null,
-					),
+						CURLINFO_HEADER_OUT   => 1,
+						CURLOPT_CUSTOMREQUEST => 'DELETE',
+						CURLOPT_HEADER        => 1,
+						CURLOPT_NOBODY        => 0,
+						CURLOPT_POST          => 0,
+						CURLOPT_POSTFIELDS    => isset( $values['data'] ) ? $values['data'] : '',
+						CURLOPT_HTTPGET       => null,
+						CURLOPT_FILE          => null,
+					) +
+					( $this->_use_binarytransfer ? array( CURLOPT_BINARYTRANSFER => null ) : array() ),
 
 				'callback'  => $callback,
 
@@ -685,7 +707,6 @@ class Zebra_cURL {
 		else {
 			$this->_process();
 		}
-
 	}
 
 	/**
@@ -706,7 +727,6 @@ class Zebra_cURL {
 	 *  This method will automatically set the following options:
 	 *
 	 *  - `CURLINFO_HEADER_OUT` = `TRUE`
-	 *  - `CURLOPT_BINARYTRANSFER` = `TRUE`
 	 *  - `CURLOPT_HEADER` = `TRUE`
 	 *  - `CURLOPT_FILE`
 	 *
@@ -717,6 +737,10 @@ class Zebra_cURL {
 	 *  - `CURLOPT_NOBODY`
 	 *  - `CURLOPT_POST`
 	 *  - `CURLOPT_POSTFIELDS`
+	 *
+	 *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be set to `TRUE`.<br>
+	 *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+	 *      it has no effect and has been deprecated starting with PHP 8.4}.
 	 *
 	 *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
 	 *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -832,24 +856,27 @@ class Zebra_cURL {
 			$this->_requests[] = array(
 
 				'url'       => $values['url'],
-
 				'path'      => rtrim( $path, '/\\' ) . '/',
 
 				// merge any custom options with the default ones
 				'options'   =>
+
 					( isset( $values['options'] ) ? $values['options'] : array() ) +
 					array(
-						CURLINFO_HEADER_OUT    => 1,
-						CURLOPT_BINARYTRANSFER => 1,
-						CURLOPT_HEADER         => 0,
-						CURLOPT_CUSTOMREQUEST  => null,
-						CURLOPT_HTTPGET        => null,
-						CURLOPT_NOBODY         => null,
-						CURLOPT_POST           => null,
-						CURLOPT_POSTFIELDS     => null,
-					),
+						CURLINFO_HEADER_OUT   => 1,
+						CURLOPT_HEADER        => 0,
+						CURLOPT_CUSTOMREQUEST => null,
+						CURLOPT_HTTPGET       => null,
+						CURLOPT_NOBODY        => null,
+						CURLOPT_POST          => null,
+						CURLOPT_POSTFIELDS    => null,
+					) +
+					( $this->_use_binarytransfer ? array( CURLOPT_BINARYTRANSFER => 1 ) : array() ),
 
 				'callback'  => $callback,
+
+				// flag indicating that this is a download request
+				'download'  => true,
 
 				// additional arguments to pass to the callback function, if any
 				'arguments' => array_slice( func_get_args(), 3, null, true ),
@@ -871,7 +898,6 @@ class Zebra_cURL {
 		else {
 			$this->_process();
 		}
-
 	}
 
 	/**
@@ -888,7 +914,6 @@ class Zebra_cURL {
 	 *  This method will automatically set the following options:
 	 *
 	 *  - `CURLINFO_HEADER_OUT` = `TRUE`
-	 *  - `CURLOPT_BINARYTRANSFER` = `TRUE`
 	 *  - `CURLOPT_HEADER` = `TRUE`
 	 *  - `CURLOPT_FILE`
 	 *
@@ -899,6 +924,10 @@ class Zebra_cURL {
 	 *  - `CURLOPT_NOBODY`
 	 *  - `CURLOPT_POST`
 	 *  - `CURLOPT_POSTFIELDS`
+	 *
+	 *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be set to `TRUE`.<br>
+	 *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+	 *      it has no effect and has been deprecated starting with PHP 8.4}.
 	 *
 	 *  >   If you are downloading multiple files with the same name the later ones will overwrite the previous ones.
 	 *
@@ -1049,25 +1078,28 @@ class Zebra_cURL {
 			$this->_requests[] = array(
 
 				'url'       => $values['url'],
-
 				'path'      => rtrim( $path, '/\\' ) . '/',
 
 				// merge any custom options with the default ones
 				'options'   =>
+
 					( isset( $values['options'] ) ? $values['options'] : array() ) +
 					array(
-						CURLINFO_HEADER_OUT    => 1,
-						CURLOPT_BINARYTRANSFER => 1,
-						CURLOPT_HEADER         => 0,
-						CURLOPT_USERPWD        => $username != '' ? $username . ':' . $password : null,
-						CURLOPT_CUSTOMREQUEST  => null,
-						CURLOPT_HTTPGET        => null,
-						CURLOPT_NOBODY         => null,
-						CURLOPT_POST           => null,
-						CURLOPT_POSTFIELDS     => null,
-					),
+						CURLINFO_HEADER_OUT   => 1,
+						CURLOPT_HEADER        => 0,
+						CURLOPT_USERPWD       => $username != '' ? $username . ':' . $password : null,
+						CURLOPT_CUSTOMREQUEST => null,
+						CURLOPT_HTTPGET       => null,
+						CURLOPT_NOBODY        => null,
+						CURLOPT_POST          => null,
+						CURLOPT_POSTFIELDS    => null,
+					) +
+					( $this->_use_binarytransfer ? array( CURLOPT_BINARYTRANSFER => 1 ) : array() ),
 
 				'callback'  => $callback,
+
+				// flag indicating that this is a download request
+				'download'  => true,
 
 				// additional arguments to pass to the callback function, if any
 				'arguments' => array_slice( func_get_args(), 5, null, true ),
@@ -1089,7 +1121,6 @@ class Zebra_cURL {
 		else {
 			$this->_process();
 		}
-
 	}
 
 	/**
@@ -1105,11 +1136,14 @@ class Zebra_cURL {
 	 *
 	 *  ...and will unset the following options:
 	 *
-	 *  - `CURLOPT_BINARYTRANSFER`
 	 *  - `CURLOPT_CUSTOMREQUEST`
 	 *  - `CURLOPT_FILE`
 	 *  - `CURLOPT_POST`
 	 *  - `CURLOPT_POSTFIELDS`
+	 *
+	 *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+	 *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+	 *      it has no effect and has been deprecated starting with PHP 8.4}.
 	 *
 	 *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
 	 *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1276,18 +1310,19 @@ class Zebra_cURL {
 
 				// merge any custom options with the default ones
 				'options'   =>
+
 					( isset( $values['options'] ) ? $values['options'] : array() ) +
 					array(
-						CURLINFO_HEADER_OUT    => 1,
-						CURLOPT_HEADER         => 1,
-						CURLOPT_HTTPGET        => 1,
-						CURLOPT_NOBODY         => 0,
-						CURLOPT_BINARYTRANSFER => null,
-						CURLOPT_CUSTOMREQUEST  => null,
-						CURLOPT_FILE           => null,
-						CURLOPT_POST           => null,
-						CURLOPT_POSTFIELDS     => null,
-					),
+						CURLINFO_HEADER_OUT   => 1,
+						CURLOPT_HEADER        => 1,
+						CURLOPT_HTTPGET       => 1,
+						CURLOPT_NOBODY        => 0,
+						CURLOPT_CUSTOMREQUEST => null,
+						CURLOPT_FILE          => null,
+						CURLOPT_POST          => null,
+						CURLOPT_POSTFIELDS    => null,
+					) +
+					( $this->_use_binarytransfer ? array( CURLOPT_BINARYTRANSFER => null ) : array() ),
 
 				'callback'  => $callback,
 
@@ -1311,7 +1346,6 @@ class Zebra_cURL {
 		else {
 			$this->_process();
 		}
-
 	}
 
 	/**
@@ -1327,11 +1361,14 @@ class Zebra_cURL {
 	 *
 	 *  ...and will unset the following options:
 	 *
-	 *  - `CURLOPT_BINARYTRANSFER`
 	 *  - `CURLOPT_CUSTOMREQUEST`
 	 *  - `CURLOPT_FILE`
 	 *  - `CURLOPT_POST`
 	 *  - `CURLOPT_POSTFIELDS`
+	 *
+	 *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+	 *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+	 *      it has no effect and has been deprecated starting with PHP 8.4}.
 	 *
 	 *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
 	 *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1397,18 +1434,19 @@ class Zebra_cURL {
 
 				// merge any custom options with the default ones
 				'options'   =>
+
 					( isset( $values['options'] ) ? $values['options'] : array() ) +
 					array(
-						CURLINFO_HEADER_OUT    => 1,
-						CURLOPT_HEADER         => 1,
-						CURLOPT_HTTPGET        => 1,
-						CURLOPT_NOBODY         => 1,
-						CURLOPT_BINARYTRANSFER => null,
-						CURLOPT_CUSTOMREQUEST  => null,
-						CURLOPT_FILE           => null,
-						CURLOPT_POST           => null,
-						CURLOPT_POSTFIELDS     => null,
-					),
+						CURLINFO_HEADER_OUT   => 1,
+						CURLOPT_HEADER        => 1,
+						CURLOPT_HTTPGET       => 1,
+						CURLOPT_NOBODY        => 1,
+						CURLOPT_CUSTOMREQUEST => null,
+						CURLOPT_FILE          => null,
+						CURLOPT_POST          => null,
+						CURLOPT_POSTFIELDS    => null,
+					) +
+					( $this->_use_binarytransfer ? array( CURLOPT_BINARYTRANSFER => null ) : array() ),
 
 				'callback'  => $callback,
 
@@ -1432,7 +1470,6 @@ class Zebra_cURL {
 		else {
 			$this->_process();
 		}
-
 	}
 
 	/**
@@ -1518,7 +1555,6 @@ class Zebra_cURL {
 				CURLOPT_USERPWD  => ( $username == '' && $password == '' ? null : ( $username . ':' . $password ) ),
 			)
 		);
-
 	}
 
 	/**
@@ -1582,7 +1618,6 @@ class Zebra_cURL {
 		else {
 			$this->options[ $option ] = $value;
 		}
-
 	}
 
 	/**
@@ -1600,9 +1635,12 @@ class Zebra_cURL {
 	 *
 	 *  ...and will unset the following options:
 	 *
-	 *  - `CURLOPT_BINARYTRANSFER`
 	 *  - `CURLOPT_HTTPGET`
 	 *  - `CURLOPT_FILE`
+	 *
+	 *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+	 *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+	 *      it has no effect and has been deprecated starting with PHP 8.4}.
 	 *
 	 *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
 	 *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1681,18 +1719,19 @@ class Zebra_cURL {
 
 				// merge any custom options with the default ones
 				'options'   =>
+
 					( isset( $values['options'] ) ? $values['options'] : array() ) +
 					array(
-						CURLINFO_HEADER_OUT    => 1,
-						CURLOPT_CUSTOMREQUEST  => 'PATCH',
-						CURLOPT_HEADER         => 1,
-						CURLOPT_NOBODY         => 0,
-						CURLOPT_POST           => 0,
-						CURLOPT_POSTFIELDS     => isset( $values['data'] ) ? $values['data'] : '',
-						CURLOPT_BINARYTRANSFER => null,
-						CURLOPT_HTTPGET        => null,
-						CURLOPT_FILE           => null,
-					),
+						CURLINFO_HEADER_OUT   => 1,
+						CURLOPT_CUSTOMREQUEST => 'PATCH',
+						CURLOPT_HEADER        => 1,
+						CURLOPT_NOBODY        => 0,
+						CURLOPT_POST          => 0,
+						CURLOPT_POSTFIELDS    => isset( $values['data'] ) ? $values['data'] : '',
+						CURLOPT_HTTPGET       => null,
+						CURLOPT_FILE          => null,
+					) +
+					( $this->_use_binarytransfer ? array( CURLOPT_BINARYTRANSFER => null ) : array() ),
 
 				'callback'  => $callback,
 
@@ -1716,7 +1755,6 @@ class Zebra_cURL {
 		else {
 			$this->_process();
 		}
-
 	}
 
 	/**
@@ -1733,10 +1771,13 @@ class Zebra_cURL {
 	 *
 	 *  ...and will unset the following options:
 	 *
-	 *  - `CURLOPT_BINARYTRANSFER`
 	 *  - `CURLOPT_CUSTOMREQUEST`
 	 *  - `CURLOPT_HTTPGET`
 	 *  - `CURLOPT_FILE`
+	 *
+	 *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+	 *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+	 *      it has no effect and has been deprecated starting with PHP 8.4}.
 	 *
 	 *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
 	 *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -1904,20 +1945,20 @@ class Zebra_cURL {
 			$this->_requests[] = array(
 
 				'url'       => $values['url'],
-
 				'options'   =>
+
 					( isset( $values['options'] ) ? $values['options'] : array() ) +
 					array(
-						CURLINFO_HEADER_OUT    => 1,
-						CURLOPT_HEADER         => 1,
-						CURLOPT_NOBODY         => 0,
-						CURLOPT_POST           => 1,
-						CURLOPT_POSTFIELDS     => isset( $values['data'] ) ? $values['data'] : '',
-						CURLOPT_BINARYTRANSFER => null,
-						CURLOPT_CUSTOMREQUEST  => null,
-						CURLOPT_HTTPGET        => null,
-						CURLOPT_FILE           => null,
-					),
+						CURLINFO_HEADER_OUT   => 1,
+						CURLOPT_HEADER        => 1,
+						CURLOPT_NOBODY        => 0,
+						CURLOPT_POST          => 1,
+						CURLOPT_POSTFIELDS    => isset( $values['data'] ) ? $values['data'] : '',
+						CURLOPT_CUSTOMREQUEST => null,
+						CURLOPT_HTTPGET       => null,
+						CURLOPT_FILE          => null,
+					) +
+					( $this->_use_binarytransfer ? array( CURLOPT_BINARYTRANSFER => null ) : array() ),
 
 				'callback'  => $callback,
 
@@ -1941,7 +1982,6 @@ class Zebra_cURL {
 		else {
 			$this->_process();
 		}
-
 	}
 
 	/**
@@ -2054,7 +2094,6 @@ class Zebra_cURL {
 				)
 			);
 		}
-
 	}
 
 	/**
@@ -2072,9 +2111,12 @@ class Zebra_cURL {
 	 *
 	 *  ...and will unset the following options:
 	 *
-	 *  - `CURLOPT_BINARYTRANSFER`
 	 *  - `CURLOPT_HTTPGET`
 	 *  - `CURLOPT_FILE`
+	 *
+	 *  >   For PHP < 5.1.2 `CURLOPT_BINARYTRANSFER` will also be unset.<br>
+	 *      For newer versions of PHP this option is not used as {@link https://php.watch/versions/8.4/CURLOPT_BINARYTRANSFER-deprecated
+	 *      it has no effect and has been deprecated starting with PHP 8.4}.
 	 *
 	 *  Multiple requests are processed asynchronously, in parallel, and the callback function is called for each and every
 	 *  request as soon as the request finishes. The number of parallel requests to be constantly processed, at all times,
@@ -2153,18 +2195,19 @@ class Zebra_cURL {
 
 				// merge any custom options with the default ones
 				'options'   =>
+
 					( isset( $values['options'] ) ? $values['options'] : array() ) +
 					array(
-						CURLINFO_HEADER_OUT    => 1,
-						CURLOPT_CUSTOMREQUEST  => 'PUT',
-						CURLOPT_HEADER         => 1,
-						CURLOPT_NOBODY         => 0,
-						CURLOPT_POST           => 0,
-						CURLOPT_POSTFIELDS     => isset( $values['data'] ) ? $values['data'] : '',
-						CURLOPT_BINARYTRANSFER => null,
-						CURLOPT_HTTPGET        => null,
-						CURLOPT_FILE           => null,
-					),
+						CURLINFO_HEADER_OUT   => 1,
+						CURLOPT_CUSTOMREQUEST => 'PUT',
+						CURLOPT_HEADER        => 1,
+						CURLOPT_NOBODY        => 0,
+						CURLOPT_POST          => 0,
+						CURLOPT_POSTFIELDS    => isset( $values['data'] ) ? $values['data'] : '',
+						CURLOPT_HTTPGET       => null,
+						CURLOPT_FILE          => null,
+					) +
+					( $this->_use_binarytransfer ? array( CURLOPT_BINARYTRANSFER => null ) : array() ),
 
 				'callback'  => $callback,
 
@@ -2188,7 +2231,6 @@ class Zebra_cURL {
 		else {
 			$this->_process();
 		}
-
 	}
 
 	/**
@@ -2268,7 +2310,6 @@ class Zebra_cURL {
 
 		// set a flag indicating the library to queue requests rather than executing them right away
 		$this->_queue = true;
-
 	}
 
 	/**
@@ -2329,17 +2370,15 @@ class Zebra_cURL {
 		// make the request
 		$this->get(
 			$url,
-			function( $result ) {
+			function ( $result ) {
 
 				// store result in this private property of the library
 				$this->_scrape_result = $result;
-
 			}
 		);
 
 		// return result
 		return $body_only ? $this->_scrape_result->body : $this->_scrape_result;
-
 	}
 
 	/**
@@ -2475,7 +2514,6 @@ class Zebra_cURL {
 				trigger_error( 'Directory "' . $path . '", holding one or more CA certificates to verify the peer with, was not found', E_USER_ERROR );
 			}
 		}
-
 	}
 
 	/**
@@ -2501,7 +2539,6 @@ class Zebra_cURL {
 		else {
 			$this->_process();
 		}
-
 	}
 
 	/**
@@ -2530,7 +2567,6 @@ class Zebra_cURL {
 
 		// return the result
 		return $result;
-
 	}
 
 	/**
@@ -2566,7 +2602,6 @@ class Zebra_cURL {
 
 		// return the path and name of the file name associated with the request
 		return rtrim( $this->cache['path'], '/' ) . '/' . md5( serialize( $request ) );
-
 	}
 
 	/**
@@ -2632,7 +2667,6 @@ class Zebra_cURL {
 
 		// return headers as an array
 		return $result;
-
 	}
 
 	/**
@@ -2754,7 +2788,7 @@ class Zebra_cURL {
 		// walk recursively through the array
 		array_walk_recursive(
 			$urls,
-			function( &$value ) {
+			function ( &$value ) {
 
 				// if we have to upload a file
 				if ( strpos( $value, '@' ) === 0 ) {
@@ -2770,13 +2804,11 @@ class Zebra_cURL {
 
 					}
 				}
-
 			}
 		);
 
 		// return the normalized array
 		return $urls;
-
 	}
 
 	/**
@@ -2876,7 +2908,7 @@ class Zebra_cURL {
 						$resource_number = key(
 							array_filter(
 								$this->_running_map,
-								function( $value ) use ( $handle ) {
+								function ( $value ) use ( $handle ) {
 									return $value === $handle;
 								}
 							)
@@ -2959,7 +2991,7 @@ class Zebra_cURL {
 						'';
 
 					// if _htmlentities is set to TRUE, we're not doing a binary transfer and we have a body, run htmlentities() on it
-					if ( $this->_htmlentities && ! isset( $request['options'][ CURLOPT_BINARYTRANSFER ] ) && $result->body != '' ) {
+					if ( $this->_htmlentities && ( ! isset( $request['download'] ) || ! $request['download'] ) && $result->body != '' ) {
 
 						// since PHP 5.3.0, htmlentities will return an empty string if the input string contains an
 						// invalid code unit sequence within the given encoding (utf-8 in our case)
@@ -2989,7 +3021,7 @@ class Zebra_cURL {
 						);
 
 						// if downloaded a file
-						if ( isset( $request['options'][ CURLOPT_BINARYTRANSFER ] ) && $request['options'][ CURLOPT_BINARYTRANSFER ] ) {
+						if ( isset( $request['download'] ) && $request['download'] ) {
 
 							// we make a dummy array with the first first 2 elements (which we also remove from the $arguments[0]->info array)
 							$tmp_array = array_splice( $arguments[0]->info, 0, 2 );
@@ -3036,7 +3068,7 @@ class Zebra_cURL {
 					curl_close( $handle );
 
 					// if we downloaded a file
-					if ( isset( $request['options'][ CURLOPT_BINARYTRANSFER ] ) && $request['options'][ CURLOPT_BINARYTRANSFER ] ) {
+					if ( isset( $request['download'] ) && $request['download'] ) {
 
 						// close the associated file pointer
 						fclose( $this->_running[ $resource_number ]['file_handler'] );
@@ -3061,7 +3093,6 @@ class Zebra_cURL {
 			curl_multi_close( $this->_multi_handle );
 
 		}
-
 	}
 
 	/**
@@ -3091,7 +3122,6 @@ class Zebra_cURL {
 				sleep( $this->pause_interval );
 			}
 		}
-
 	}
 
 	/**
@@ -3122,7 +3152,7 @@ class Zebra_cURL {
 			$resource_number = PHP_MAJOR_VERSION < 8 ? preg_replace( '/Resource id #/', '', $handle ) : uniqid( '', true );
 
 			// if we're downloading something
-			if ( isset( $request['options'][ CURLOPT_BINARYTRANSFER ] ) && $request['options'][ CURLOPT_BINARYTRANSFER ] ) {
+			if ( isset( $request['download'] ) && $request['download'] ) {
 
 				// use parse_url to analyze the string
 				// we use this so we won't have hashtags and/or query string in the file's name later on
@@ -3165,6 +3195,15 @@ class Zebra_cURL {
 				}
 			}
 
+			// make sure we use http_build_query on arrays used in CURLOPT_POSTFIELDS
+			if ( isset( $this->options[ CURLOPT_POSTFIELDS ] ) && is_array( $this->options[ CURLOPT_POSTFIELDS ] ) ) {
+				foreach ( $this->options[ CURLOPT_POSTFIELDS ] as $key => $value ) {
+					if ( is_array( $value ) ) {
+						$this->options[ CURLOPT_POSTFIELDS ][ $key ] = http_build_query( $value, '', '&' );
+					}
+				}
+			}
+
 			// set options for the handle
 			curl_setopt_array( $handle, $this->options );
 
@@ -3180,7 +3219,6 @@ class Zebra_cURL {
 			$this->_running[ $resource_number ] = $request;
 
 		}
-
 	}
 
 	/**
@@ -3216,7 +3254,5 @@ class Zebra_cURL {
 
 		// return the random user agent string
 		return 'Mozilla/5.0 (compatible; MSIE ' . $version . '.0; Windows NT ' . $major_version . '.' . $minor_version . ( $extras == 1 ? '; WOW64' : ( $extras == 2 ? '; Win64; IA64' : ( $extras == 3 ? '; Win64; x64' : '' ) ) ) . ')';
-
 	}
-
 }
