@@ -51,6 +51,10 @@ Text Domain:  ksas-department-tailwind
 	background: rgba(148, 207, 248, .84);
 }
 
+.front .grey-card-outline {
+  letter-spacing: -0.03rem;
+}
+
 .front .grey-card-outline p {
 	margin-bottom: inherit;
 }
