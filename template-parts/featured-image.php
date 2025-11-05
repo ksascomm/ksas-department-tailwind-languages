@@ -8,10 +8,10 @@
  */
 
 ?>
-<div class="alignfull featured-image-area front-featured-image-area mt-0!" role="banner">
-	<div class="flex bg-white h-20 lg:h-80">
-		<div class="flex lg:items-center lg:justify-start xl:justify-center text-left px-6 sm:w-full lg:w-2/5">
-			<h1 class="tracking-tight leading-10 sm:leading-none lg:text-4xl xl:text-[44px] lg:pl-2 xl:pl-0 py-8">
+<div class="alignfull featured-image-area front-featured-image-area h-auto mt-0!  bg-white lg:bg-grey-lightest">
+	<div class="flex h-auto lg:h-80 ">
+		<div class="flex lg:pr-6 text-left pl-6 md:pl-[4%] 2xl:pl-[6%] 3xl:pl-[12%] 4xl:pl-[15%] lg:items-center lg:justify-start sm:w-full lg:w-2/5">
+			<h1 class="tracking-tight leading-10 sm:leading-none lg:text-4xl xl:text-[44px] py-8 mb-0">
 				<?php the_title(); ?>
 				<?php
 				$program_name = get_the_program_name( $post );
@@ -50,7 +50,7 @@
 				$i              = wp_rand( 0, count( $bg ) - 1 ); // Generate random number size of the array.
 				$selected_image = "$bg[$i]"; // Set variable equal to which random filename was chosen.
 				?>
-				<img src="<?php echo esc_url( $selected_image ); ?>" alt="Hero Image of Students on Campus" class="h-56 w-full object-cover sm:h-72 lg:w-full lg:h-full stock-image">
+				<img src="<?php echo esc_url( $selected_image ); ?>" alt="Hero Image of Students on Campus" class="object-cover w-full h-56 sm:h-72 lg:w-full lg:h-full stock-image">
 				<?php
 		endif;
 			?>
