@@ -84,7 +84,7 @@ jQuery(document).ready( function($) {
         },
         searchPanes: {
             preSelect: [{
-                rows:['Fall 2025'],
+                rows:['Spring 2026'],
                 column: 5
             }],
         },
