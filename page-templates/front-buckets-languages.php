@@ -39,16 +39,14 @@ get_header();
 
 		<div class="mt-2 mb-4 relative h-1 pb-4 after:absolute after:bg-[rgb(229_226_224_/_var(--tw-bg-opacity,1))] after:border-[rgb(49_38_29_/_var(--tw-border-opacity,1))] after:absolute after:z-[1] after:top-[-9px] after:left-[calc(50%_-_9px)] after:w-[18px] after:h-[18px] after:border after:shadow-[inset_0_0_0_2px_#fefefe,0_0_0_4px_#fefefe] after:rounded-[50%] after:border-solid; before:absolute before:w-[90%] before:h-px before:bg-[linear-gradient(_to_right,transparent,rgb(49,38,29),transparent_)] before:top-0 before:inset-x-[5%]"></div>
 
-		<div class="news-section px-2 sm:px-0 py-12">
-			<div class="prose sm:prose lg:prose-lg xl:prose-xl mx-auto">
-				<div class="flex flex-wrap justify-between px-4 lg:px-2">
-					<div>
-						<h2 class="pb-4 md:pb-0 my-0!"><?php echo esc_html( $heading ); ?></h2>
-					</div>
-					<div>
-						<a class="not-prose bg-blue text-white inline-flex py-2 px-3 text-base items-center border-none! hover:text-primary hover:bg-blue-light" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">
-							View All Posts&nbsp;<span class="fa-solid fa-circle-chevron-right" aria-hidden="true"></span></a>
-					</div>
+		<div class="container px-2 py-12 news-section section-inner sm:px-0">
+			<div class="flex flex-wrap justify-between px-4 lg:px-0 2xl:max-w-[1800px] 2xl:mx-auto">
+				<div>
+					<h2 class="pb-4 md:pb-0 my-0! font-bold font-heavy"><?php echo esc_html( $heading ); ?></h2>
+				</div>
+				<div class="pb-4">
+					<a class="not-prose bg-blue text-white inline-flex py-2 px-3 text-base items-center border-none! hover:text-primary hover:bg-blue-light" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">
+						View All Posts&nbsp;<span class="fa-solid fa-circle-chevron-right" aria-hidden="true"></span></a>
 				</div>
 			</div>
 			<?php
@@ -59,7 +57,7 @@ get_header();
 				)
 			);
 			?>
-			<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 mx-auto">
+			<div class="grid grid-cols-1 gap-4 p-4 xl:grid-cols-3 justify-items-stretch 2xl:max-w-[1800px] 2xl:mx-auto">
 				<?php
 				if ( $news_query->have_posts() ) :
 					while ( $news_query->have_posts() ) :
@@ -68,9 +66,6 @@ get_header();
 				endwhile;
 				endif;
 				?>
-				<?php if ( is_active_sidebar( 'news-inline' ) ) : ?>
-					<?php get_template_part( 'template-parts/widgets-news-inline' ); ?>
-				<?php endif; ?>
 				</div>
 		</div>
 		<?php else : // field_name returned false. ?>

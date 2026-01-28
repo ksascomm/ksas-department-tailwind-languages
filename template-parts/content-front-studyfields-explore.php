@@ -87,7 +87,7 @@ if ( ! empty( $studyfield_response ) ) :
 <?php
 if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_languages' ) ) :
 	?>
-	<div class="container lg:max-xl:px-8 pt-6 pb-12">
+	<div class="container section-inner lg:max-xl:px-8 pt-6 pb-12">
 	<?php
 	if ( have_rows( 'explore_the_department_languages' ) ) :
 		$count = count( get_field( 'explore_the_department_languages' ) );

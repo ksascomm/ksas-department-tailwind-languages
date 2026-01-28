@@ -22,7 +22,6 @@ function child_theme_enqueue_styles() {
 		array( $parent_style ),
 		wp_get_theme()->get( 'Version' )
 	);
-
 }
 
 /**
@@ -71,7 +70,12 @@ add_action( 'init', 'create_the_programs' );
  */
 function create_the_sidebars() {
 	if ( function_exists( 'register_sidebar' ) ) {
-		$all_programs = get_terms( 'program', array( 'hide_empty' => 0 ) );
+		$all_programs = get_terms(
+			array(
+				'taxonomy'   => 'program',
+				'hide_empty' => false,
+			)
+		);
 		foreach ( $all_programs as $single_program ) {
 			$single_name = $single_program->name;
 			$single_slug = $single_program->slug;
@@ -115,7 +119,7 @@ function get_the_program_slug( $post ) {
 		$program      = $this_program->slug;
 	} elseif ( is_singular() && ! is_singular( 'people' ) ) {
 		$terms = get_the_terms( $post, 'program' );
-		if ( is_array( $terms ) || is_array( $terms2 ) ) {
+		if ( is_array( $terms ) ) {
 			$term_names = array();
 			foreach ( $terms as $term ) {
 				$term_names[] = $term->slug;
@@ -163,7 +167,7 @@ function get_the_program_name( $post ) {
 		$program      = $this_program->name;
 	} elseif ( is_singular() && ! is_singular( 'people' ) ) {
 		$terms = get_the_terms( $post, 'program' );
-		if ( is_array( $terms ) || is_array( $terms2 ) ) {
+		if ( is_array( $terms ) ) {
 			$term_names = array();
 			foreach ( $terms as $term ) {
 				$term_names[] = $term->name;
@@ -238,7 +242,7 @@ function post_program_add_taxonomy_filters() {
 				echo "<select name='$tax_slug' id='$tax_slug' class='postform'>";
 				echo "<option value=''>$tax_name</option>";
 				foreach ( $terms as $term ) {
-					echo '<option value=' . $term->slug, $current_tax_slug == $term->slug ? ' selected="selected"' : '','>' . $term->name . ' (' . $term->count . ')</option>';
+					echo '<option value=' . $term->slug, $current_tax_slug == $term->slug ? ' selected="selected"' : '', '>' . $term->name . ' (' . $term->count . ')</option>';
 				}
 				echo '</select>';
 			}
@@ -379,7 +383,6 @@ function wpse172754_add_widget_classes( $params ) {
 	}
 
 	return $params;
-
 }
 
 
@@ -424,6 +427,3 @@ function ksas_blocks_child_custom_posts_scripts() {
 		wp_enqueue_script( 'courses-js' );
 	endif;
 }
-
-
-

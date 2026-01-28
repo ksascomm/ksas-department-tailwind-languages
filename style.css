@@ -5,15 +5,16 @@ Description:  KSAS Department Tailwind Child Theme
 Author:       KSAS Communications
 Author URI:   https://github.com/ksascomm
 Template:     ksas-department-tailwind
-Version:      5.0
+Version:      5.1
 License:      GNU General Public License v2 or later
 License URI:  http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:  ksas-department-tailwind
 */
 
+/*
 .news-section .grid {
 	max-width: 112ch;
-}
+}*/
 
 .front.prose .grey-card-outline h3 a:hover {
 	color: #31261d;
