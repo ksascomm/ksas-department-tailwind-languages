@@ -24,7 +24,7 @@ get_header();
 	$subdepartment                = str_replace( ' ', '%20', $subdepartment_select_unclean );
 	$subdepartment                = str_replace( '-', '%20', $subdepartment );
 	$subdepartment                = str_replace( '&', '%26', $subdepartment );
-	$fall                         = 'fall%202025';
+	$fall                         = 'fall%202026';
 	$summer                       = 'summer%202026';
 	$spring                       = 'spring%202026';
 	$open                         = 'open';
