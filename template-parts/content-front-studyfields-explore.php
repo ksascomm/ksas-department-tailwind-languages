@@ -8,58 +8,11 @@
  */
 
 ?>
-<?php
-	$studyfieldacf  = get_field( 'studyfield' );
-	$studyfield_url = 'https://krieger.jhu.edu/wp-json/wp/v2/studyfields?slug=' . $studyfieldacf;
-
-$studyfield = get_transient( 'studyfield_api_query' );
-
-if ( WP_DEBUG || false === $studyfield ) {
-	$studyfield = wp_remote_get( $studyfield_url );
-	set_transient( 'studyfield_api_query', $studyfield, 2419200 );
-}
-
-	// Display a error nothing is returned.
-if ( is_wp_error( $studyfield ) ) {
-	$error_string = $studyfield->get_error_message();
-	echo '<script>console.log("Error: ' . esc_js( $error_string ) . '")</script>';
-}
-	// Get the body.
-	$studyfield_response = json_decode( wp_remote_retrieve_body( $studyfield ) );
-
-	// Display a warning nothing is returned.
-if ( empty( $studyfield_response ) ) {
-	echo '<script>console.log("Error: There is no API Response")</script>';
-}
-
-if ( ! empty( $studyfield_response ) ) :
-	?>
-
-	<?php
-	foreach ( $studyfield_response as $studyfield_data ) :
-		if ( ! empty( $studyfield_data->post_meta_fields->ecpt_headline[0] ) ) {
-			$studyfield_tagline = $studyfield_data->post_meta_fields->ecpt_headline[0];
-		}
-		if ( ! empty( $studyfield_data->post_meta_fields->ecpt_degreesoffered[0] ) ) {
-			$studyfield_degrees = $studyfield_data->post_meta_fields->ecpt_degreesoffered[0];
-		}
-	endforeach;
-	?>
-<?php endif; ?>
 
 <div class="flex border-t border-blue hero bg-grey-cool bg-opacity-50 front-featured-image-area">
 	<div class="flex items-center text-left px-8 md:px-12 pb-4 md:py-0 lg:w-7/12 ">
-		<div>
-			<h2 class="text-primary text-3xl md:text-3xl lg:text-4xl mt-8 lg:mt-0 font-heavy font-bold">
-				<?php if ( ! empty( $studyfield_tagline ) ) : ?>
-					<?php echo esc_html( $studyfield_tagline ); ?>
-				<?php else : ?>
-					<?php the_title(); ?>
-				<?php endif; ?>
-			</h2>
-			<div class="mt-2 text-primary text-lg md:text-xl tracking-tight">
-				<?php the_content(); ?>
-			</div>
+		<div class="mt-2 text-primary text-lg md:text-xl tracking-tight">
+			<?php the_content(); ?>
 		</div>
 	</div>
 <div class="w-full lg:w-5/12 front featured-image min-h-[300px] lg:min-h-full">
