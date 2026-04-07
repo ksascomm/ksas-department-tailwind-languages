@@ -7,6 +7,10 @@
  * @package KSAS_Department_Tailwind
  */
 
+/**
+ * 1. ENQUEUE STYLES & SCRIPTS
+ */
+
 add_action( 'wp_enqueue_scripts', 'child_theme_enqueue_styles' );
 	/**
 	 * Sets up styles and scripts for this child theme
@@ -15,7 +19,11 @@ add_action( 'wp_enqueue_scripts', 'child_theme_enqueue_styles' );
 	 */
 function child_theme_enqueue_styles() {
 	$parent_style = 'ksas-department-tailwind-style';
+
+	// Parent theme style.
 	wp_enqueue_style( $parent_style, get_template_directory_uri() . '/dist/css/style.css', array(), filemtime( get_template_directory() . '/resources/css' ), 'all' );
+
+	// Child theme style.
 	wp_enqueue_style(
 		'child-style',
 		get_stylesheet_directory_uri() . '/style.css',
@@ -25,7 +33,7 @@ function child_theme_enqueue_styles() {
 }
 
 /**
- * Create the custom Programs taxonomy
+ * 2. Create the custom Programs taxonomy
  *
  * @return void
  */
@@ -43,7 +51,7 @@ function create_the_programs() {
 		'not_found_in_trash' => __( 'No Program found in Trash' ),
 	);
 
-	$pages = array( 'courses', 'profile', 'post', 'slider', 'bulletinboard', 'page', 'faculty-books' );
+	$pages = array( 'profile', 'post', 'bulletinboard', 'page', 'faculty-books' );
 
 	$args = array(
 		'labels'            => $labels,
@@ -64,366 +72,252 @@ function create_the_programs() {
 add_action( 'init', 'create_the_programs' );
 
 /**
- * Create the custom sidebars for each Program taxonomy
+ * 3. PROGRAM DATA HELPER (Centralized logic)
+ */
+function get_current_program_context() {
+	static $context = null;
+	if ( null !== $context ) {
+		return $context;
+	}
+
+	$obj_id  = get_queried_object_id();
+	$context = array(
+		'name' => '',
+		'slug' => '',
+	);
+
+	if ( is_page() && ! is_page_template( 'page-templates/program-homepage.php' ) ) {
+		$parents         = get_post_ancestors( $obj_id );
+		$top_id          = ( ! empty( $parents ) ) ? end( $parents ) : $obj_id;
+		$parent          = get_post( $top_id );
+		$context['name'] = $parent->post_title;
+		$context['slug'] = $parent->post_name;
+	} elseif ( is_page_template( 'page-templates/program-homepage.php' ) ) {
+		$context['name'] = get_the_title( $obj_id );
+		$context['slug'] = sanitize_title( $context['name'] );
+	} elseif ( is_category() || is_tax() ) {
+		$term            = get_queried_object();
+		$context['name'] = $term->name;
+		$context['slug'] = $term->slug;
+	} elseif ( is_singular() ) {
+		$tax   = is_singular( 'people' ) ? 'filter' : 'program';
+		$terms = get_the_terms( $obj_id, $tax );
+		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+			$context['name'] = implode( ', ', wp_list_pluck( $terms, 'name' ) );
+			$context['slug'] = implode( ' ', wp_list_pluck( $terms, 'slug' ) );
+		}
+	}
+	return $context;
+}
+
+/**
+ * Legacy wrapper for getting program slug.
  *
- * @return void
+ * @return string
  */
-function create_the_sidebars() {
-	if ( function_exists( 'register_sidebar' ) ) {
-		$all_programs = get_terms(
-			array(
-				'taxonomy'   => 'program',
-				'hide_empty' => false,
-			)
-		);
-		foreach ( $all_programs as $single_program ) {
-			$single_name = $single_program->name;
-			$single_slug = $single_program->slug;
-			register_sidebar(
-				array(
-					'name'          => $single_name . ' Sidebar',
-					'id'            => $single_slug . '-sb',
-					'description'   => 'This is the ' . $single_name . ' homepage sidebar',
-					'before_widget' => '<aside id="%1$s" class="widget %2$s" aria-label="Sidebar Content %1$s">',
-					'after_widget'  => '</aside>',
-					'before_title'  => '<div class="widget_title"><h4>',
-					'after_title'   => '</h4></div>',
-				)
-			);
-		}
-	}
-}
-add_action( 'init', 'create_the_sidebars' );
+function get_the_program_slug() {
+	$data = get_current_program_context();
+	return $data['slug']; }
+/**
+ * Legacy wrapper for getting program name.
+ *
+ * @return string
+ */
+function get_the_program_name() {
+	$data = get_current_program_context();
+	return $data['name']; }
 
 /**
- * Gret the program slug for future use
+ * 4. ADMIN COLUMN CUSTOMIZATION
  */
-function get_the_program_slug( $post ) {
-	$post    = get_queried_object_id();
-	$program = '';
-	if ( is_page() && ! is_page_template( 'page-templates/program-homepage.php' ) ) {
-		/* Get an array of Ancestors and Parents if they exist */
-		$parents = get_post_ancestors( $post );
-		if ( ! empty( $parents ) ) {
-			/* Get the top Level page->ID count base 1, array base 0 so -1 */
-			$id = ( $parents ) ? $parents[ count( $parents ) - 1 ] : $post->ID;
-			/* Get the parent and set the $class with the page slug (post_name) */
-			$parent  = get_post( $id );
-			$program = $parent->post_name;
-		}
-	} elseif ( is_page_template( 'page-templates/program-homepage.php' ) ) {
-		$program = get_the_title( $post );
-		$program = strtolower( $program );
-	} elseif ( is_category() || is_tax() ) {
-		$this_program = get_term_by( 'slug', get_query_var( 'program' ), 'program' );
-		$program      = $this_program->slug;
-	} elseif ( is_singular() && ! is_singular( 'people' ) ) {
-		$terms = get_the_terms( $post, 'program' );
-		if ( is_array( $terms ) ) {
-			$term_names = array();
-			foreach ( $terms as $term ) {
-				$term_names[] = $term->slug;
-			}
-			$program = implode( ' ', $term_names );
-		} else {
-			$program = $terms->slug; }
-	} elseif ( is_singular( 'people' ) ) {
-		$terms = get_the_terms( $post, 'filter' );
-		if ( is_array( $terms ) ) {
-			$term_names = array();
-			foreach ( $terms as $term ) {
-				$term_names[] = $term->slug;
-			}
-			$program = implode( ' ', $term_names );
-		} else {
-			$program = $terms->slug; }
-	}
-	return $program;
-}
-
+add_filter( 'manage_post_posts_columns', 'add_program_columns' );
 /**
- * Get the program name for future use
- */
-function get_the_program_name( $post ) {
-	wp_reset_postdata();
-	$post    = get_queried_object_id();
-	$program = '';
-	if ( is_page() && ! is_page_template( 'page-templates/program-homepage.php' ) ) {
-		/* Get an array of Ancestors and Parents if they exist */
-		$parents = get_post_ancestors( $post );
-		if ( ! empty( $parents ) ) {
-
-			/* Get the top Level page->ID count base 1, array base 0 so -1 */
-			$id = ( $parents ) ? $parents[ count( $parents ) - 1 ] : $post->ID;
-			/* Get the parent and set the $class with the page slug (post_name) */
-			$parent  = get_post( $id );
-			$program = $parent->post_title;
-		}
-	} elseif ( is_page_template( 'page-templates/program-homepage.php' ) ) {
-		$program = get_the_title( $post );
-
-	} elseif ( is_category() || is_tax() ) {
-		$this_program = get_term_by( 'slug', get_query_var( 'program' ), 'program' );
-		$program      = $this_program->name;
-	} elseif ( is_singular() && ! is_singular( 'people' ) ) {
-		$terms = get_the_terms( $post, 'program' );
-		if ( is_array( $terms ) ) {
-			$term_names = array();
-			foreach ( $terms as $term ) {
-				$term_names[] = $term->name;
-			}
-			$program = implode( ' ', $term_names );
-		} else {
-			$program = $terms->slug; }
-	} elseif ( is_singular( 'people' ) ) {
-		$terms = get_the_terms( $post, 'filter' );
-		if ( is_array( $terms ) ) {
-			$term_names = array();
-			foreach ( $terms as $term ) {
-				$term_names[] = $term->name;
-			}
-			$program = implode( '', $term_names );
-		} else {
-			$program = $terms->name; }
-	}
-	return $program;
-}
-
-/**
- * Add program columns to wp-admin
+ * Add program columns to wp-admin post list.
+ *
+ * @param array $columns Existing columns.
+ * @return array Modified columns.
  */
 function add_program_columns( $columns ) {
-	unset( $columns['author'] );
-	unset( $columns['comments'] );
-	return array_merge(
-		$columns,
-		array( 'program' => __( 'Program' ) )
-	);
+	unset( $columns['author'], $columns['comments'] );
+	$columns['program'] = __( 'Program' );
+	return $columns;
 }
-add_filter( 'manage_post_posts_columns', 'add_program_columns' );
 
 add_action( 'manage_posts_custom_column', 'custompost_columns', 10, 2 );
-
 /**
- * Add program columns to wp-admin
+ * Render the content for custom admin columns.
+ *
+ * @param string $column  Column name.
+ * @param int    $post_id Post ID.
+ * @return void
  */
 function custompost_columns( $column, $post_id ) {
-	switch ( $column ) {
-		case 'program':
-			$terms = get_the_term_list( $post_id, 'program', '', ',', '' );
-			if ( is_string( $terms ) ) {
-				echo $terms;
-			} else {
-				_e( 'No Program Assigned', 'your_text_domain' );
-			}
-			break;
-
-	}
-}
-
-/**
- * Create filters from custom Program taxonomy
- */
-function post_program_add_taxonomy_filters() {
-	global $typenow;
-
-	// An array of all the taxonomyies you want to display. Use the taxonomy name or slug.
-	$taxonomies = array( 'program' );
-
-	// must set this to the post type you want the filter(s) displayed on.
-	if ( $typenow == 'post' ) {
-
-		foreach ( $taxonomies as $tax_slug ) {
-			$current_tax_slug = isset( $_GET[ $tax_slug ] ) ? $_GET[ $tax_slug ] : false;
-			$tax_obj          = get_taxonomy( $tax_slug );
-			$tax_name         = $tax_obj->labels->name;
-			$terms            = get_terms( $tax_slug );
-			if ( count( $terms ) > 0 ) {
-				echo "<select name='$tax_slug' id='$tax_slug' class='postform'>";
-				echo "<option value=''>$tax_name</option>";
-				foreach ( $terms as $term ) {
-					echo '<option value=' . $term->slug, $current_tax_slug == $term->slug ? ' selected="selected"' : '', '>' . $term->name . ' (' . $term->count . ')</option>';
-				}
-				echo '</select>';
-			}
-		}
+	if ( 'program' === $column ) {
+		$terms = get_the_term_list( $post_id, 'program', '', ', ', '' );
+		echo ( $terms ) ? wp_kses_post( $terms ) : esc_html__( 'No Program Assigned', 'ksas-department-tailwind' );
 	}
 }
 
 add_action( 'restrict_manage_posts', 'post_program_add_taxonomy_filters' );
-
-/** Disable Parent Theme custom <title> filter */
-function remove_parent_page_title() {
-	remove_filter( 'pre_get_document_title', 'custom_ksasacademic_page_title', 9999 );
-}
-add_action( 'after_setup_theme', 'remove_parent_page_title' );
-
 /**
- * Add custom text to <title> using child theme specific pre_get_document_title hook
+ * Add taxonomy filters to the admin post list.
+ *
+ * @return void
  */
-function custom_ksasacademic_mll_page_title( $title ) {
-	$post         = get_queried_object_id();
-	$program_slug = get_the_program_slug( $post );
-	$program_name = get_the_program_name( $post );
-	if ( is_front_page() && is_home() ) {
-		$title = get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-		return $title;
-	} elseif ( is_front_page() ) {
-				$title = get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-		return $title;
-	} elseif ( is_home() ) {
-		if ( is_paged() ) {
-			$page_number = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-			$title       = get_the_title( get_option( 'page_for_posts', true ) ) . ' Page ' . $page_number . ' | ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-			return $title;
+function post_program_add_taxonomy_filters() {
+	global $typenow;
+	if ( 'post' === $typenow ) {
+		// 1. Check for the nonce (WordPress uses 'nonce' or '_wpnonce' in admin lists).
+		if ( isset( $_GET['program'], $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'bulk-posts' ) ) {
+			$selected = sanitize_text_field( wp_unslash( $_GET['program'] ) );
 		} else {
-			$title = get_the_title( get_option( 'page_for_posts', true ) ) . ' | ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-			return $title;
+			// 2. Default if nonce is missing or input isn't set.
+			$selected = isset( $_GET['program'] ) ? sanitize_text_field( wp_unslash( $_GET['program'] ) ) : '';
 		}
-	} elseif ( is_category() ) {
-		$title = single_cat_title( '', false ) . ' | ' . get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-		return $title;
-	} elseif ( is_author() ) {
-		global $post;
-		$title = get_the_author_meta( 'display_name', $post->post_author ) . ' Author Archives | ' . get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-		return $title;
-	} elseif ( is_archive() ) {
-		if ( is_paged() ) {
-			$page_number = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-			$title       = single_cat_title( '', false ) . ' Archive Page ' . $page_number . ' | ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-			return $title;
-		} else {
-			$title = single_cat_title( '', false ) . ' | ' . get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-			return $title;
-		}
-	} elseif ( is_single() ) {
-		$title = the_title_attribute( 'echo=0' ) . ' | ' . get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-		return $title;
-	} elseif ( is_page() && ! is_page_template( 'page-templates/program-homepage.php' ) ) {
-		if ( ! empty( $program_name ) ) :
-			$title = the_title_attribute( 'echo=0' ) . ' | ' . $program_name . ' | ' . get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-			return $title;
-		else :
-			$title = the_title_attribute( 'echo=0' ) . ' | ' . get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-			return $title;
-		endif;
-	} elseif ( is_page() && is_page_template( 'page-templates/program-homepage.php' ) ) {
-		$title = $program_name . ' Program | ' . get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-		return $title;
-	} elseif ( is_404() ) {
-		$title = 'Page Not Found | ' . get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-		return $title;
-	} elseif ( is_tax( 'bbtype' ) ) {
-		$title = single_tag_title( '', false ) . ' | ' . get_bloginfo( 'description' ) . ' ' . get_bloginfo( 'name' ) . ' | Johns Hopkins University';
-		return $title;
-	} else {
-		return $title;
+		$info = get_taxonomy( 'program' );
+		wp_dropdown_categories(
+			array(
+				'show_option_all' => sprintf(
+					/* translators: %s: Taxonomy label name */
+					__( 'Show all %s', 'ksas-department-tailwind' ),
+					$info->label
+				),
+				'taxonomy'        => 'program',
+				'name'            => 'program',
+				'orderby'         => 'name',
+				'selected'        => $selected,
+				'show_count'      => true,
+				'hide_empty'      => false,
+				'value_field'     => 'slug',
+			)
+		);
 	}
 }
 
+/**
+ * 5. SEO & DOCUMENT TITLES
+ */
+add_action(
+	'after_setup_theme',
+	function () {
+		remove_filter( 'pre_get_document_title', 'custom_ksasacademic_page_title', 9999 );
+	}
+);
+
 add_filter( 'pre_get_document_title', 'custom_ksasacademic_mll_page_title', 99999 );
+/**
+ * Custom logic for document <title> tag.
+ *
+ * @param string $title Default title.
+ * @return string Modified title.
+ */
+function custom_ksasacademic_mll_page_title( $title ) {
+	$program   = get_current_program_context();
+	$site_name = get_bloginfo( 'name' );
+	$desc      = get_bloginfo( 'description' );
+	$suffix    = ' | Johns Hopkins University';
+
+	if ( is_front_page() ) {
+		return "$desc $site_name$suffix";
+	}
+
+	if ( is_page_template( 'page-templates/program-homepage.php' ) ) {
+		return "{$program['name']} Program | $desc $site_name$suffix";
+	}
+
+	if ( ! empty( $program['name'] ) && is_page() ) {
+		return get_the_title() . " | {$program['name']} | $desc $site_name$suffix";
+	}
+
+	return $title;
+}
 
 /**
- * Add Program name to body class
+ * 6. THEME EXTRAS (Body Classes & Widgets)
  */
-function add_taxonomy_to_single( $classes ) {
-	if ( is_singular() ) {
-		global $post;
-		$my_terms = get_the_terms( $post->ID, 'program' );
-		if ( $my_terms && ! is_wp_error( $my_terms ) ) {
-			$classes[] = $my_terms[0]->slug;
+add_filter(
+	'body_class',
+	function ( $classes ) {
+		if ( is_singular() ) {
+			$terms = get_the_terms( get_the_ID(), 'program' );
+			if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+				$classes[] = 'program-' . $terms[0]->slug;
+			}
 		}
 		return $classes;
 	}
-}
-add_filter( 'body_class', 'add_taxonomy_to_single' );
-/**
- * Show all Program News posts on Program News Archive Page
- */
-add_action( 'pre_get_posts', 'tl_project_tax_page' );
-function tl_project_tax_page( $query ) {
-	if ( ! is_admin() && $query->is_main_query() && is_tax( 'program' ) ) {
+);
+
+add_action(
+	'pre_get_posts',
+	function ( $query ) {
+		if ( ! is_admin() && $query->is_main_query() && is_tax( 'program' ) ) {
 			$query->set( 'posts_per_page', '-1' );
+		}
 	}
-}
+);
 
 /**
- * Load Parent Theme's ACF settings json
+ * 7. ASSETS & LIBRARIES
  */
-add_filter( 'acf/settings/load_json', 'parent_theme_field_groups' );
-function parent_theme_field_groups( $paths ) {
-	$path    = get_template_directory() . '/acf-json';
-	$paths[] = $path;
-	return $paths;
-}
-
-/**
- * Remove the Dequeue KSAS-SIS-Courses plugin action established by parent theme
- *
- * Because using a different course function, first need to undo parent action
- * before enqueing the localized scripts/styles
- */
-function remove_parent_dequeue_sis_scripts() {
-	remove_action( 'wp_enqueue_scripts', 'dequeue_sis_scripts' );
-}
-add_action( 'after_setup_theme', 'remove_parent_dequeue_sis_scripts' );
-
-is_admin() || add_filter( 'dynamic_sidebar_params', 'wpse172754_add_widget_classes' );
-
-/**
- * Add classes for widgets.
- *
- * @param  array $params
- * @return array
- */
-function wpse172754_add_widget_classes( $params ) {
-
-	if ( $params[0]['widget_name'] == 'Text' ) {
-		$params[0] = array_replace( $params[0], array( 'before_widget' => str_replace( 'widget_text', 'widget_text prose', $params[0]['before_widget'] ) ) );
+add_filter(
+	'acf/settings/load_json',
+	function ( $paths ) {
+		$paths[] = get_template_directory() . '/acf-json';
+		return $paths;
 	}
-
-	return $params;
-}
-
+);
 
 add_action( 'wp_enqueue_scripts', 'ksas_blocks_child_custom_posts_scripts' );
-	/**
-	 * Conditionally add isotope scripts to Research Projects page
-	 *
-	 * Note that this function is hooked into the wp_enqueue_scripts
-	 */
+/**
+ * Enqueue scripts conditionally for specific templates.
+ *
+ * @return void
+ */
 function ksas_blocks_child_custom_posts_scripts() {
-	if ( is_page_template( 'page-templates/people-directory-languages-rows.php' ) ) :
+	if ( is_page_template( 'page-templates/people-directory-languages-rows.php' ) ) {
 
 		wp_enqueue_script( 'isotope-packaged', 'https://unpkg.com/isotope-layout@3.0.6/dist/isotope.pkgd.min.js', array(), '3.0.6', true );
 
-		wp_enqueue_script( 'isotope-local', get_template_directory_uri() . '/dist/js/isotope.js', array( 'jquery' ), KSAS_DEPARTMENT_TAILWIND_VERSION, true );
+		wp_enqueue_script(
+			'isotope-local',
+			get_template_directory_uri() . '/dist/js/isotope.js',
+			array( 'jquery' ),
+			defined( 'KSAS_DEPARTMENT_TAILWIND_VERSION' ) ? KSAS_DEPARTMENT_TAILWIND_VERSION : '1.0.0',
+			true
+		);
+	} elseif ( is_page_template( 'page-templates/language-program-courses.php' ) ) {
+		// Enqueue DataTables Styles - Fourth param must be version string.
+		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css', array(), '2.1.8' );
+		wp_enqueue_style( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.3/css/searchPanes.dataTables.min.css', array(), '2.3.3' );
+		wp_enqueue_style( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.min.css', array(), '3.0.3' );
 
-	elseif ( is_page_template( 'page-templates/language-program-courses.php' ) ) :
-		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css', array(), true );
+		// Local CSS with version.
+		wp_enqueue_style( 'courses-css', get_stylesheet_directory_uri() . '/css/courses.css', array(), '1.0.2', 'all' );
 
-		wp_enqueue_style( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.3/css/searchPanes.dataTables.min.css', array(), true );
-
-		wp_enqueue_style( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.min.css', array(), true );
-
-		wp_enqueue_style( 'courses-css', get_stylesheet_directory_uri() . '/css/courses.css', false, '1.0.2', 'all' );
-
-		wp_register_script( 'data-tables', '//cdn.datatables.net/2.1.8/js/dataTables.min.js', array(), '2.1.8', false );
-		wp_enqueue_script( 'data-tables' );
+		// Register and Enqueue Scripts.
+		wp_register_script( 'data-tables', '//cdn.datatables.net/2.1.8/js/dataTables.min.js', array( 'jquery' ), '2.1.8', true );
 		wp_script_add_data( 'data-tables', 'defer', true );
+		wp_enqueue_script( 'data-tables' );
 
-		wp_register_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.3/js/dataTables.searchPanes.min.js', array(), '2.3.3', false );
-		wp_enqueue_script( 'data-tables-searchpanes' );
+		wp_register_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.3/js/dataTables.searchPanes.min.js', array( 'data-tables' ), '2.3.3', true );
 		wp_script_add_data( 'data-tables-searchpanes', 'defer', true );
+		wp_enqueue_script( 'data-tables-searchpanes' );
 
-		wp_register_script( 'data-tables-select', '//cdn.datatables.net/select/2.1.0/js/dataTables.select.min.js', array(), '2.1.0', false );
-		wp_enqueue_script( 'data-tables-select' );
+		wp_register_script( 'data-tables-select', '//cdn.datatables.net/select/2.1.0/js/dataTables.select.min.js', array( 'data-tables' ), '2.1.0', true );
 		wp_script_add_data( 'data-tables-select', 'defer', true );
+		wp_enqueue_script( 'data-tables-select' );
 
-		wp_enqueue_script( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.min.js', array(), '3.0.3', false );
+		wp_enqueue_script( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.min.js', array( 'data-tables' ), '3.0.3', true );
 		wp_script_add_data( 'data-tables-responsive', 'defer', true );
 
-		wp_register_script( 'courses-js', get_stylesheet_directory_uri() . '/js/courses.js', array( 'jquery' ), '1.1.0', true );
-		wp_enqueue_script( 'courses-js' );
-	endif;
+		// Local JS - Added data-tables as a dependency.
+		wp_enqueue_script(
+			'courses-js',
+			get_stylesheet_directory_uri() . '/js/courses.js',
+			array( 'jquery', 'data-tables' ),
+			'1.1.0',
+			true
+		);
+	}
 }

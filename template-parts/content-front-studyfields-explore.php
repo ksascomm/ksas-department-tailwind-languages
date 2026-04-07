@@ -11,7 +11,10 @@
 <?php
 	$studyfieldacf  = get_field( 'studyfield' );
 	$studyfield_url = 'https://krieger.jhu.edu/wp-json/wp/v2/studyfields?slug=' . $studyfieldacf;
-if ( WP_DEBUG || false === ( $studyfield = get_transient( 'studyfield_api_query' ) ) ) {
+
+$studyfield = get_transient( 'studyfield_api_query' );
+
+if ( WP_DEBUG || false === $studyfield ) {
 	$studyfield = wp_remote_get( $studyfield_url );
 	set_transient( 'studyfield_api_query', $studyfield, 2419200 );
 }
@@ -19,8 +22,7 @@ if ( WP_DEBUG || false === ( $studyfield = get_transient( 'studyfield_api_query'
 	// Display a error nothing is returned.
 if ( is_wp_error( $studyfield ) ) {
 	$error_string = $studyfield->get_error_message();
-	echo '<script>console.log("Error:' . $error_string . '")</script>';
-
+	echo '<script>console.log("Error: ' . esc_js( $error_string ) . '")</script>';
 }
 	// Get the body.
 	$studyfield_response = json_decode( wp_remote_retrieve_body( $studyfield ) );
@@ -60,26 +62,18 @@ if ( ! empty( $studyfield_response ) ) :
 			</div>
 		</div>
 	</div>
-	<div class="hidden lg:block lg:w-5/12 front featured-image">
-		<?php if ( have_rows( 'homepage_hero_images' ) ) : ?>
-			<?php
-			$random_images = get_field( 'homepage_hero_images' );
-			shuffle( $random_images );
-			// print("<pre>".print_r($random_images,true)."</pre>");
-			$random_img_url   = $random_images[0]['homepage_hero_image']['url'];
-			$random_img_alt   = $random_images[0]['homepage_hero_image']['alt'];
-			$random_img_title = $random_images[0]['homepage_hero_image']['title'];
+<div class="w-full lg:w-5/12 front featured-image min-h-[300px] lg:min-h-full">
+		<?php
+		$hero_images = get_field( 'homepage_hero_images' );
+		if ( ! empty( $hero_images ) && is_array( $hero_images ) ) :
+			shuffle( $hero_images );
+			$random_img = $hero_images[0]['homepage_hero_image'];
 			?>
-			<img class="mt-0! h-56 w-full object-cover sm:h-72 lg:w-full lg:h-full slide-<?php echo esc_html( $random_img_title ); ?>" src="<?php echo esc_url( $random_img_url ); ?>" alt="<?php echo esc_html( $random_img_alt ); ?>" />
+			<img class="m-0! h-full w-full object-cover slide-<?php echo esc_attr( sanitize_title( $random_img['title'] ) ); ?>" 
+				src="<?php echo esc_url( $random_img['url'] ); ?>" 
+				alt="<?php echo esc_attr( $random_img['alt'] ); ?>" />
 		<?php else : ?>
-			<?php
-			the_post_thumbnail(
-				'full',
-				array(
-					'class' => 'mt-0! h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full',
-				)
-			);
-			?>
+			<?php the_post_thumbnail( 'full', array( 'class' => 'm-0! h-full w-full object-cover' ) ); ?>
 		<?php endif; ?>
 	</div>
 </div>
@@ -90,7 +84,6 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 	<div class="container section-inner lg:max-xl:px-8 pt-6 pb-12">
 	<?php
 	if ( have_rows( 'explore_the_department_languages' ) ) :
-		$count = count( get_field( 'explore_the_department_languages' ) );
 		?>
 		<?php $heading = get_field( 'buckets_heading_languages' ); ?>
 		<!--Print Heading if there-->
@@ -99,32 +92,16 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 				<h2 class="my-0! mx-auto font-heavy font-bold"><?php echo esc_html( $heading ); ?></h2>
 			</div>
 		<?php endif; ?>
-		<!--Show Columns Dynamically-->
-		<?php if ( $count == 2 ) : ?>
-			<div class="mx-auto grid grid-cols-1 xl:grid-cols-3 px-4 xl:justify-items-center">
-		<?php elseif ( $count == 3 ) : ?>
-			<div class="mx-auto grid grid-cols-1 xl:grid-cols-3 px-4 xl:justify-items-center">
-		<?php elseif ( $count == 6 ) : ?>
-			<div class="mx-auto grid grid-cols-1 xl:grid-cols-3 px-4 xl:justify-items-center">		
-		<?php endif; ?>
+		<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 px-4">
 		<?php
 		while ( have_rows( 'explore_the_department_languages' ) ) :
 			the_row();
+			$is_major     = get_sub_field( 'major' );
+			$is_minor     = get_sub_field( 'minor' );
+			$grad_degrees = get_sub_field( 'graduate_degree' );
 			?>
-			<?php
-			// If there's an image for the bucket, do CSS magic.
-			if ( get_sub_field( 'explore_bucket_image' ) ) :
-				?>
-			<div class="bucket relative bucket-<?php echo get_row_index(); ?>">
-				<?php
-				$image = get_sub_field( 'explore_bucket_image' );
-				echo wp_get_attachment_image( $image['ID'], 'full', false, array( 'class' => 'lg:blur-[1px] w-full' ) );
-				?>
-				<div class="p-6 bucket-text lg:top-0 lg:right-0 lg:left-0 lg:bottom-0 lg:inset-0 lg:absolute">
-			<?php else : ?>
 			<div class="p-2">
 				<div class="h-full rounded-lg field mb-4 px-6 py-4 overflow-hidden bg-grey-lightest grey-card-outline">
-			<?php endif; ?>
 					<h3 class="text-2xl 2xl:text-3xl font-heavy font-bold mt-2!">
 						<?php if ( get_sub_field( 'explore_bucket_link' ) ) : ?>
 							<a href="<?php the_sub_field( 'explore_bucket_link' ); ?>">
@@ -137,20 +114,26 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 					<p class="leading-normal text-lg 2xl:text-xl tracking-wide font-light">
 						<?php the_sub_field( 'explore_bucket_text' ); ?>
 					</p>
-					<?php if ( get_sub_field( 'major' ) == 1 || get_sub_field( 'minor' ) == 1 ) : ?>
+					<?php if ( $is_major || $is_minor || ! empty( $grad_degrees ) ) : ?>
 						<ul class="degrees">
-						<?php if ( get_sub_field( 'major' ) == 1 ) : ?>
+						<?php if ( $is_major ) : ?>
 							<li class="degree on major">Major</li>
 						<?php endif; ?>
-						<?php if ( get_sub_field( 'minor' ) == 1 ) : ?>
+						<?php if ( $is_minor ) : ?>
 							<li class="degree on minor">Minor</li>
 						<?php endif; ?>
 						<?php $graduate_degree_checked_options = get_sub_field( 'graduate_degree' ); ?>
-						<?php if ( $graduate_degree_checked_options ) : ?>
-							<?php foreach ( $graduate_degree_checked_options as $graduate_degree_checked_option ) : ?>
-								<li class="degree on <?php echo $graduate_degree_checked_option['value']; ?>"><?php echo $graduate_degree_checked_option['label']; ?></li>
-							<?php endforeach; ?>
-						<?php endif; ?>
+						<?php
+						if ( ! empty( $grad_degrees ) ) :
+							foreach ( $grad_degrees as $degree ) :
+								?>
+								<li class="degree on <?php echo esc_attr( $degree['value'] ); ?>">
+									<?php echo esc_html( $degree['label'] ); ?>
+								</li>
+								<?php
+							endforeach;
+						endif;
+						?>
 						</ul>
 					<?php endif; ?>
 				</div>

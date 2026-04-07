@@ -11,28 +11,25 @@ get_header();
 ?>
 <?php
 	// Load Zebra Curl.
-	require get_stylesheet_directory() . '/lib/Zebra_cURL.php';
+	require_once get_stylesheet_directory() . '/lib/Zebra_cURL.php';
 
 	// Set query string variables.
-	$department_unclean           = 'Modern Languages and Literatures';
-	$department                   = str_replace( ' ', '%20', $department_unclean );
-	$department                   = str_replace( '&', '%26', $department );
-	$program_slug                 = get_the_program_slug( $post );
-	$subdepartment_unclean        = $program_slug;
-	$subdepartment_select         = get_field( 'program_course_select' );
-	$subdepartment_select_unclean = $subdepartment_select->name;
-	$subdepartment                = str_replace( ' ', '%20', $subdepartment_select_unclean );
-	$subdepartment                = str_replace( '-', '%20', $subdepartment );
-	$subdepartment                = str_replace( '&', '%26', $subdepartment );
-	$fall                         = 'fall%202026';
-	$summer                       = 'summer%202026';
-	$spring                       = 'spring%202026';
-	$open                         = 'open';
-	$approval                     = 'approval%20required';
-	$closed                       = 'closed';
-	$waitlist                     = 'waitlist%20only';
-	$reserved_open                = 'reserved%20open';
-	$key                          = '0jCaUO1bHwbG1sFEKQd3iXgBgxoDUOhR';
+	$dept_raw    = 'Modern Languages and Literatures';
+	$department  = rawurlencode( $dept_raw );
+	$subdept_obj = get_field( 'program_course_select' );
+
+	// Safety check: if ACF is empty, stop or provide default.
+if ( ! $subdept_obj ) {
+	return;
+}
+	$subdept_name = str_replace( '-', ' ', $subdept_obj->name );
+	$sub_dept_url = rawurlencode( $subdept_name );
+
+	// Manual Semester Control.
+	$fall   = 'fall%202026';
+	$summer = 'summer%202026';
+	$spring = 'spring%202026';
+	$key    = '0jCaUO1bHwbG1sFEKQd3iXgBgxoDUOhR';
 
 	// Create first Zebra Curl class.
 	$course_curl = new Zebra_cURL();
@@ -43,46 +40,46 @@ get_header();
 		)
 	);
 	// Cache for 14 days.
-	$course_curl->cache( WP_CONTENT_DIR . '/sis-cache/' . $subdepartment, 1209600 );
+	$course_curl->cache( WP_CONTENT_DIR . '/sis-cache/' . sanitize_title( $subdept_name ), 1209600 );
 
 	// Create API Url calls.
-	$courses_fall_url = 'https://sis.jhu.edu/api/classes?key=' . $key . '&School=Krieger%20School%20of%20Arts%20and%20Sciences&Term=' . $spring . '&Term=' . $fall . '&Department=AS%20' . $department . '&SubDepartment=' . $subdepartment;
-
-	// print_r( $courses_fall_url );
+	$api_url = "https://sis.jhu.edu/api/classes?key={$key}&School=" . rawurlencode( 'Krieger School of Arts and Sciences' ) . "&Term={$spring}&Term={$fall}&Department=AS%20{$department}&SubDepartment={$sub_dept_url}";
 
 	$course_data = array();
-	$output      = '';
 
-	// get the first set of data.
+	// 5. Get the first set of data.
 	$course_curl->get(
-		$courses_fall_url,
-		function ( $result ) use ( &$course_data ) {
+		$api_url,
+		function ( $result ) use ( &$course_data, $key ) {
 
-			$key = '0jCaUO1bHwbG1sFEKQd3iXgBgxoDUOhR';
+			if ( empty( $result->body ) ) {
+				return;
+			}
 
-			if ( ( is_array( $result ) && ! empty( $result ) ) || is_object( $result ) ) {
+			// Decode JSON safely.
+			$body = ! is_array( $result->body ) ? json_decode( html_entity_decode( $result->body ) ) : $result->body;
 
-				$result->body = ! is_array( $result->body ) ? json_decode( html_entity_decode( $result->body ) ) : $result->body;
+			if ( ! is_array( $body ) ) {
+				return;
+			}
 
-				foreach ( $result->body as $course ) {
+			foreach ( $body as $course ) {
+				$section = $course->{'SectionName'} ?? '';
+				$level   = $course->{'Level'} ?? '';
 
-					$section = $course->{'SectionName'};
-					$level   = $course->{'Level'};
+				// Clean check for course levels.
+				$is_grad  = ( false !== strpos( $level, 'Graduate' ) );
+				$is_under = ( false !== strpos( $level, 'Undergraduate' ) );
+				$is_empty = ( '' === $level );
 
-					if (
-						strpos( $level, 'Graduate' ) !== false
-					|| strpos( $level, 'Undergraduate' ) !== false
-					|| ( $level === '' ) !== false
-					) {
-						$number       = $course->{'OfferingName'};
-						$clean_number = preg_replace( '/[^A-Za-z0-9\-]/', '', $number );
-						$dirty_term   = $course->{'Term_IDR'};
-						$clean_term   = str_replace( ' ', '%20', $dirty_term );
-						$details_url  = 'https://sis.jhu.edu/api/classes/' . $clean_number . $section . '/' . $clean_term . '?key=' . $key;
+				if ( $is_grad || $is_under || $is_empty ) {
+					$number       = $course->{'OfferingName'};
+					$clean_number = preg_replace( '/[^A-Za-z0-9\-]/', '', $number );
 
-						// add to array!
-						$course_data[] = $details_url;
-					}
+					$term_raw   = $course->{'Term_IDR'};
+					$clean_term = rawurlencode( $term_raw );
+
+					$course_data[] = "https://sis.jhu.edu/api/classes/{$clean_number}{$section}/{$clean_term}?key={$key}";
 				}
 			}
 		}
@@ -92,63 +89,83 @@ get_header();
 	$course_curl->get(
 		$course_data,
 		function ( $result ) use ( &$output ) {
+			$body = ! is_array( $result->body ) ? json_decode( html_entity_decode( $result->body ) ) : $result->body;
 
-			$result->body = ! is_array( $result->body ) ? json_decode( html_entity_decode( $result->body ) ) : $result->body;
+			if ( empty( $body ) || ! isset( $body[0] ) ) {
+				return;
+			}
 
-			$title               = $result->body[0]->{'Title'};
-			$term                = $result->body[0]->{'Term_IDR'};
+			$course              = $body[0];
+			$title               = $course->{'Title'} ?? 'No Title';
+			$term                = $course->{'Term_IDR'} ?? '';
 			$clean_term          = str_replace( ' ', '-', $term );
-			$meetings            = $result->body[0]->{'Meetings'};
-			$status              = $result->body[0]->{'Status'};
-			$seatsavailable      = $result->body[0]->{'SeatsAvailable'};
-			$course_number       = $result->body[0]->{'OfferingName'};
+			$course_number       = $course->{'OfferingName'} ?? '';
 			$clean_course_number = preg_replace( '/[^A-Za-z0-9\-]/', '', $course_number );
-			$credits             = $result->body[0]->{'Credits'};
-			$section_number      = $result->body[0]->{'SectionName'};
-			$instructor          = $result->body[0]->{'InstructorsFullName'};
-			$course_level        = $result->body[0]->{'Level'};
-			$location            = $result->body[0]->{'Location'};
-			$description         = $result->body[0]->{'SectionDetails'}[0]->{'Description'};
-			$room                = $result->body[0]->{'SectionDetails'}[0]->{'Meetings'}[0]->{'Building'};
-			$roomnumber          = $result->body[0]->{'SectionDetails'}[0]->{'Meetings'}[0]->{'Room'};
-			$sectiondetails      = $result->body[0]->{'SectionDetails'}[0];
-			$tags                = array();
+			$section_number      = $course->{'SectionName'} ?? '';
+			$instructor          = $course->{'InstructorsFullName'} ?? 'Staff';
+			$location            = $course->{'Location'} ?? '';
+			$meetings            = $course->{'Meetings'} ?? 'TBA';
+			$status              = $course->{'Status'} ?? 'N/A';
+			$seats               = $course->{'SeatsAvailable'} ?? '0';
 
-			if ( isset( $sectiondetails->{'PosTags'} ) ) {
-				if ( ! empty( $sectiondetails->{'PosTags'} ) ) {
-						$postag = $sectiondetails->{'PosTags'};
-					foreach ( $postag as $tag ) {
-						$tags[] = $tag->{'Tag'};
-					}
+			$section_details = $course->{'SectionDetails'}[0] ?? null;
+			$description     = $section_details->{'Description'} ?? 'No description available.';
+			$credits         = $section_details->{'Credits'} ?? '';
+			// --- NEW ROOM LOGIC ---
+			$room        = $section_details->{'Meetings'}[0]->{'Building'} ?? '';
+			$roomnumber  = $section_details->{'Meetings'}[0]->{'Room'} ?? '';
+			$room2       = '';
+			$roomnumber2 = '';
+			if ( isset( $section_details->{'Meetings'}[1] ) && is_object( $section_details->{'Meetings'}[1] ) ) {
+				$second_meeting = $section_details->{'Meetings'}[1];
+				$room2          = $second_meeting->{'Building'} ?? '';
+				$roomnumber2    = $second_meeting->{'Room'} ?? '';
+			}
+			$room_info = trim( $room . ' ' . $roomnumber );
+			if ( ! empty( $room2 ) || ! empty( $roomnumber2 ) ) {
+				$room_info .= '; ' . trim( $room2 . ' ' . $roomnumber2 );
+			}
+
+			$location_display = ( strtolower( trim( $location ) ) === 'online' ) ? 'Online' : $room_info;
+
+			// --- NEW TAGS LOGIC ---
+			$tags = array();
+			if ( isset( $section_details->{'PosTags'} ) && is_array( $section_details->{'PosTags'} ) ) {
+				foreach ( $section_details->{'PosTags'} as $tag ) {
+					$tags[] = $tag->{'Tag'};
 				}
 			}
 			$print_tags = empty( $tags ) ? 'n/a' : implode( ', ', $tags );
 
-			$output .= '<tr><td>' . $course_number . '&nbsp;(' . $section_number . ')</td><td>' . $title . '</td><td class="show-for-medium">' . $meetings . '</td><td class="show-for-medium">' . $instructor . '</td><td class="show-for-medium">' . $room . '&nbsp;' . $roomnumber . '</td><td>' . $term . '</td>';
-
-			$output .= '<td><p class="hidden">' . $description . '</p><button class="modal-button bg-blue text-white px-2 hover:text-black hover:bg-blue-light" href="#course-' . $clean_course_number . $section_number . $clean_term . '">More Info<span class="sr-only">-' . $title . '-' . $section_number . '</span></button></td></tr>';
-
-			$output .= '<div class="modal" id="course-' . $clean_course_number . $section_number . $clean_term . '"><div class="modal-content"><div class="modal-header"><span class="close">×</span><h1 id="' . $clean_term . $course_number . '-' . $section_number . '">' . $title . '<br><small>' . $course_number . '&nbsp;(' . $section_number . ')</small></h1></div><div class="modal-body"><p>' . $description . '<ul><li><strong>Days/Times:</strong> ' . $meetings . ' </li><li><strong>Instructor:</strong> ' . $instructor . ' </li><li><strong>Room:</strong> ' . $room . '&nbsp;' . $roomnumber . ' </li><li><strong>Status:</strong> ' . $status . '</li><li><strong>Seats Available:</strong> ' . $seatsavailable . '</li><li><strong>PosTag(s):</strong> ' . $print_tags . '</li></ul></p></div></div></div>';
+			ob_start(); // Buffer the output to avoid PHPCS "Direct echo" warnings in some contexts.
+			?>
+		<tr>
+			<td><?php echo esc_html( $course_number ); ?>&nbsp;(<?php echo esc_html( $section_number ); ?>)</td>
+			<td><?php echo esc_html( $title ); ?></td>
+			<td><?php echo esc_html( $meetings ); ?></td>
+			<td><?php echo esc_html( $instructor ); ?></td>
+			<td><?php echo esc_html( $location_display ); ?></td>
+			<td><?php echo esc_html( $term ); ?></td>
+			<td class="none">
+				<div class="course-details-accordion">
+					<ul class="additional-info">
+						<li><strong>Description:</strong> <?php echo wp_kses_post( $description ); ?></li>
+						<li><strong>Credits:</strong> <?php echo esc_html( $credits ); ?></li>
+						<li><strong>Status:</strong> <?php echo esc_html( $status ); ?></li>
+						<li><strong>Seats Available:</strong> <?php echo esc_html( $seats ); ?></li>
+						<li><strong>Tags:</strong> <?php echo esc_html( $print_tags ); ?></li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+			<?php
+			$output .= ob_get_clean();
 		}
 	);
 
 	?>
 
 <main id="site-content" class="site-main prose sm:prose lg:prose-lg mx-auto">
-<?php
-	$theme = wp_get_theme(); // Gets the current theme.
-if ( 'ksas-blocks' === $theme->template ) :
-	// Gets the parent theme template.
-	?>
-
-		<?php
-		if ( function_exists( 'bcn_display' ) ) :
-			?>
-		<div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
-			<?php bcn_display(); ?>
-		</div>
-		<?php endif; ?>
-	<?php endif; ?>
 	<?php
 	while ( have_posts() ) :
 		the_post();
@@ -167,11 +184,14 @@ if ( 'ksas-blocks' === $theme->template ) :
 				<th>Instructor</th>
 				<th>Location</th>
 				<th>Term</th>
-				<th>Course Details</th>
+				<th class="none">Additional Details</th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php echo $output; ?>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $output;
+			?>
 		</tbody>
 	</table>
 	</div>
