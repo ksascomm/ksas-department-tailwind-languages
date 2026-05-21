@@ -5,7 +5,7 @@ Description:  KSAS Department Tailwind Child Theme
 Author:       KSAS Communications
 Author URI:   https://github.com/ksascomm
 Template:     ksas-department-tailwind
-Version:      6.0
+Version:      6.1
 Text Domain:  ksas-department-tailwind
 */
 
@@ -276,4 +276,127 @@ ul.degrees {
     .bucket-text p {
         margin-bottom: 1rem;
     }
+}
+
+/* ================================
+   Base Styles
+================================ */
+
+/* --- Homepage Featured Area --- */
+.home .front .front-featured-image-area p {
+  line-height: 1.5;
+}
+
+/* --- Post Titles --- */
+.wp-block-post-title {
+  padding-bottom: 1rem;
+}
+
+/* --- Page Navigation Highlights (Page ID: 11) --- */
+.page-id-11 #primary-menu > .menu-item.current-menu-parent > a {
+  box-shadow: none;
+}
+
+.page-id-11 .menu-item.current-menu-item.page-item-11.current_page_item a {
+  box-shadow: 0 -3px 0 0 #002d72;
+}
+
+/* --- WP Block Elements --- */
+.wp-block-group.is-layout-flow.wp-block-group-is-layout-flow {
+  border: 2px solid rgba(237, 242, 247, 1);
+}
+
+.wp-block-button__link.wp-element-button {
+  padding: 0.5rem 0.75rem;
+}
+
+.wp-block-buttons.is-content-justification-right .wp-block-button__link {
+	border-bottom: 0px;
+}
+
+ul.columns-3 .wp-block-post-date {
+	margin-bottom: 0;
+}
+
+/* --- News Widget Section --- */
+.below-news-widget-section .widget-area:first-of-type {
+  background-color: rgba(191, 204, 217, 0.5);
+}
+
+.below-news-widget-section .widget-area:nth-child(2) p a {
+  text-decoration: underline !important;
+}
+
+/* ================================
+   Media Query: max-width 900px
+================================ */
+@media only screen and (max-width: 900px) {
+  ul.columns-3 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* ================================
+   Media Query: max-width 1024px
+================================ */
+/* Force Media & Text block to stack into one column under 1024px */
+@media (max-width: 1024px) {
+    .wp-block-media-text {
+        grid-template-columns: 100% !important;
+    }
+
+    /* Resets the grid tracks so media and text take full width */
+    .wp-block-media-text .wp-block-media-text__media,
+    .wp-block-media-text .wp-block-media-text__content {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+	.wp-block-media-text__media img {
+		width: 50%;
+	}
+	.wp-block-media-text > .wp-block-media-text__content {
+		padding: 0;
+	}
+	.wp-block-media-text {
+		margin-bottom: 2rem;
+	}
+}
+
+
+/* ================================
+   Media Query: min-width 1280px
+================================ */
+@media (min-width: 1280px) {
+  .entry-content .wp-block-query.alignwide.is-layout-flow.wp-block-query-is-layout-flow {
+    margin-left: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+	.front .events-widget-section {
+		margin-top: 3rem;
+	}
+}
+
+/* ================================
+   Media Query: 1277px–1535px
+================================ */
+@media (min-width: 1277px) and (max-width: 1535px) {
+  .main-navigation .nav-primary ul.menu > li.menu-item:not(:last-child)::after {
+    margin-left: calc(var(--spacing) * 2);
+    margin-right: calc(var(--spacing) * 1.5);
+  }
+
+  .header-toggles .toggle {
+    padding: 0 1.5rem;
+  }
+
+  .main-navigation ul a,
+  .toggle-inner .toggle-text {
+    font-size: 1rem;
+  }
+
+  button.toggle.search-toggle.desktop-search-toggle svg {
+    width: 1rem;
+    height: 1rem;
+  }
 }

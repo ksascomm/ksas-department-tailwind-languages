@@ -15,21 +15,21 @@
 			<?php the_content(); ?>
 		</div>
 	</div>
-<div class="w-full lg:w-5/12 front featured-image min-h-[300px] lg:min-h-full">
-		<?php
-		$hero_images = get_field( 'homepage_hero_images' );
-		if ( ! empty( $hero_images ) && is_array( $hero_images ) ) :
-			shuffle( $hero_images );
-			$random_img = $hero_images[0]['homepage_hero_image'];
-			?>
-			<img class="m-0! h-full w-full object-cover slide-<?php echo esc_attr( sanitize_title( $random_img['title'] ) ); ?>" 
-				src="<?php echo esc_url( $random_img['url'] ); ?>" 
-				alt="<?php echo esc_attr( $random_img['alt'] ); ?>" />
-		<?php else : ?>
-			<?php the_post_thumbnail( 'full', array( 'class' => 'm-0! h-full w-full object-cover' ) ); ?>
-		<?php endif; ?>
+	<div class="w-full lg:w-5/12 front featured-image min-h-[300px] lg:min-h-full">
+			<?php
+			$hero_images = get_field( 'homepage_hero_images' );
+			if ( ! empty( $hero_images ) && is_array( $hero_images ) ) :
+				shuffle( $hero_images );
+				$random_img = $hero_images[0]['homepage_hero_image'];
+				?>
+				<img class="m-0! h-full w-full object-cover slide-<?php echo esc_attr( sanitize_title( $random_img['title'] ) ); ?>" 
+					src="<?php echo esc_url( $random_img['url'] ); ?>" 
+					alt="<?php echo esc_attr( $random_img['alt'] ); ?>" />
+			<?php else : ?>
+				<?php the_post_thumbnail( 'full', array( 'class' => 'm-0! h-full w-full object-cover' ) ); ?>
+			<?php endif; ?>
+		</div>
 	</div>
-</div>
 
 <?php
 if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_languages' ) ) :

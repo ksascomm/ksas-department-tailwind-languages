@@ -11,7 +11,7 @@ get_header();
 $program_name = get_the_program_name( $post );
 ?>
 
-<main id="site-content" class="site-main prose sm:prose lg:prose-lg mx-auto">
+<main id="site-content" class="site-main prose lg:prose-lg mx-auto">
 	
 		<?php
 		if ( have_posts() ) :
@@ -30,7 +30,7 @@ $program_name = get_the_program_name( $post );
 			/* Start the Loop */
 			while ( have_posts() ) :
 				the_post();
-				if ( 'post' == get_post_type() ) :
+				if ( 'post' === get_post_type() ) :
 					/*
 					* Include the Post-Type-specific template for the content.
 					* If you want to override this in a child theme, then include a file
