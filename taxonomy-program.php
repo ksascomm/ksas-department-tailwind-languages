@@ -61,6 +61,4 @@ $program_name = get_the_program_name( $post );
 	</main><!-- #main -->
 
 <?php
-get_sidebar();
 get_footer();
-
