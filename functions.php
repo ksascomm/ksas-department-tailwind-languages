@@ -226,7 +226,15 @@ function custom_ksasacademic_mll_page_title( $title ) {
 	}
 
 	if ( ! empty( $program['name'] ) && is_page() ) {
-		return get_the_title() . " | {$program['name']} | $desc $site_name$suffix";
+		$page_title = get_the_title();
+
+		// FIX: If the program name matches the page title exactly,
+		// don't duplicate it in the string.
+		if ( strcasecmp( trim( $page_title ), trim( $program['name'] ) ) === 0 ) {
+			return "$page_title | $desc $site_name$suffix";
+		}
+
+		return "$page_title | {$program['name']} | $desc $site_name$suffix";
 	}
 
 	return $title;
