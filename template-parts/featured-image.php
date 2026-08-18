@@ -21,7 +21,7 @@
 				if ( in_array( $program_name, $valid_programs, true ) ) :
 					?>
 					<br>
-					<small class="font-bold font-heavy text-2xl!">
+					<small class="font-serif-semibold font-weight-semibold text-2xl!">
 						<?php
 						/* translators: %s: Program Name */
 						echo esc_html( sprintf( __( '%s Program', 'flagship-tailwind' ), $program_name ) );

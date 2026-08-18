@@ -41,7 +41,7 @@ get_header();
 
 		<div class="container px-2 py-12 mx-auto news-section section-inner sm:px-0">
 			<div class="flex flex-wrap justify-between items-end px-4 lg:px-0 2xl:max-w-[1800px] 2xl:mx-auto mb-8">
-				<h2 class="pb-4 md:pb-0 my-0! font-bold font-heavy">
+				<h2 class="pb-4 md:pb-0 my-0! font-serif-semibold font-weight-semibold">
 					<?php echo esc_html( $news_heading ); ?>
 				</h2>
 				<div class="pb-4">

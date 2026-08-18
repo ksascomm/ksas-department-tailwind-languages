@@ -42,7 +42,7 @@ if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_langua
 		<!--Print Heading if there-->
 		<?php if ( $heading ) : ?>
 			<div class="px-8 mt-14 mb-8">
-				<h2 class="my-0! mx-auto font-heavy font-bold"><?php echo esc_html( $heading ); ?></h2>
+				<h2 class="my-0! mx-auto font-serif-semibold font-weight-semibold"><?php echo esc_html( $heading ); ?></h2>
 			</div>
 		<?php endif; ?>
 		<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 px-4">

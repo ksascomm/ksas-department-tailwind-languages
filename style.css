@@ -111,10 +111,14 @@ ul.degrees {
     display: inline;
 }
 
-.wp-block-post-date,
-.home .front h2.wp-block-heading {
+.wp-block-post-date {
     font-family: "worksans-bold", sans-serif;
     font-weight: 700;
+}
+
+.home .front h2.wp-block-heading {
+	font-weight: 600;
+	font-family: hopkinsslab-semibold, system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, sans-serif;
 }
 
 .home .front h2.wp-block-heading {
@@ -195,8 +199,8 @@ ul.degrees {
 }
 
 .tribe-common-h8.tribe-events-pro-summary__event-title {
-    font-family: "worksans-bold", sans-serif;
-    font-weight: 700;
+	font-weight: 600;
+	font-family: hopkinsslab-semibold, system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, sans-serif;
 }
 
 .tribe-common-b2.tribe-events-widget-events-list__event-venue a,
