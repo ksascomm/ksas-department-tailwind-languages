@@ -34,18 +34,18 @@
 <?php
 if ( function_exists( 'get_field' ) && get_field( 'explore_the_department_languages' ) ) :
 	?>
-	<div class="container section-inner lg:max-xl:px-8 pt-6 pb-12">
+	<div class="container pt-6 mx-auto news-section section-inner sm:px-0">
 	<?php
 	if ( have_rows( 'explore_the_department_languages' ) ) :
 		?>
 		<?php $heading = get_field( 'buckets_heading_languages' ); ?>
 		<!--Print Heading if there-->
 		<?php if ( $heading ) : ?>
-			<div class="px-8 mt-14 mb-8">
+			<div class="px-4 mt-14 mb-8 2xl:max-w-450 2xl:mx-auto">
 				<h2 class="my-0! mx-auto font-serif-semibold font-weight-semibold"><?php echo esc_html( $heading ); ?></h2>
 			</div>
 		<?php endif; ?>
-		<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 px-4">
+		<div class="grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3 2xl:max-w-450 2xl:mx-auto ">
 		<?php
 		while ( have_rows( 'explore_the_department_languages' ) ) :
 			the_row();

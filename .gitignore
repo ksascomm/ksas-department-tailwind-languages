@@ -1,1 +1,3 @@
+# ignore log files and databases
 .DS_Store
+node_modules/

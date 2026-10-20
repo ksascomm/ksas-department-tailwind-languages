@@ -1,0 +1,12 @@
+{
+	"name": "ksas-department-tailwind-languages",
+	"version": "7.0.0",
+	"description": "Child Theme of KSAS Department",
+	"type": "module",
+	"scripts": {
+		"dev": "vite"
+	},
+	"devDependencies": {
+		"vite": "^8.3.4"
+	}
+}

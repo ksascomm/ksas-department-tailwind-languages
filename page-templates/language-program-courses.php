@@ -43,7 +43,7 @@ if ( ! $subdept_obj ) {
 	$course_curl->cache( WP_CONTENT_DIR . '/sis-cache/' . sanitize_title( $subdept_name ), 1209600 );
 
 	// Create API Url calls.
-	$api_url = "https://sis.jhu.edu/api/classes?key={$key}&School=" . rawurlencode( 'Krieger School of Arts and Sciences' ) . "&Term={$spring}&Term={$fall}&Department=AS%20{$department}&SubDepartment={$sub_dept_url}";
+	$api_url = "https://sis.jhu.edu/api/classes?key={$key}&School=" . rawurlencode( 'Krieger School of Arts and Sciences' ) . "&Term={$spring}&Term={$fall}&Department=AS%20{$department}";
 
 	$course_data = array();
 
@@ -88,7 +88,7 @@ if ( ! $subdept_obj ) {
 	// Now that we have the first set of data.
 	$course_curl->get(
 		$course_data,
-		function ( $result ) use ( &$output ) {
+		function ( $result ) use ( &$output, $subdept_name ) {
 			$body = ! is_array( $result->body ) ? json_decode( html_entity_decode( $result->body ) ) : $result->body;
 
 			if ( empty( $body ) || ! isset( $body[0] ) ) {
@@ -107,11 +107,21 @@ if ( ! $subdept_obj ) {
 			$meetings            = $course->{'Meetings'} ?? 'TBA';
 			$status              = $course->{'Status'} ?? 'N/A';
 			$seats               = $course->{'SeatsAvailable'} ?? '0';
+			$subdepartment       = trim( $course->{'SubDepartment'} ?? '' );
+
+			// --- STRICT PHP FILTERING ---
+			// Compare the API subdepartment with your ACF selection case-insensitively.
+			// If they don't match, skip this course entirely.
+			$target_subdept = trim( $subdept_name );
+			if ( ! empty( $target_subdept ) && strcasecmp( $subdepartment, $target_subdept ) !== 0 ) {
+				return;
+			}
 
 			$section_details = $course->{'SectionDetails'}[0] ?? null;
 			$description     = $section_details->{'Description'} ?? 'No description available.';
 			$credits         = $section_details->{'Credits'} ?? '';
-			// --- NEW ROOM LOGIC ---
+
+			// --- ROOM LOGIC ---
 			$room        = $section_details->{'Meetings'}[0]->{'Building'} ?? '';
 			$roomnumber  = $section_details->{'Meetings'}[0]->{'Room'} ?? '';
 			$room2       = '';
@@ -128,7 +138,7 @@ if ( ! $subdept_obj ) {
 
 			$location_display = ( strtolower( trim( $location ) ) === 'online' ) ? 'Online' : $room_info;
 
-			// --- NEW TAGS LOGIC ---
+			// --- TAGS LOGIC ---
 			$tags = array();
 			if ( isset( $section_details->{'PosTags'} ) && is_array( $section_details->{'PosTags'} ) ) {
 				foreach ( $section_details->{'PosTags'} as $tag ) {
@@ -137,7 +147,7 @@ if ( ! $subdept_obj ) {
 			}
 			$print_tags = empty( $tags ) ? 'n/a' : implode( ', ', $tags );
 
-			ob_start(); // Buffer the output to avoid PHPCS "Direct echo" warnings in some contexts.
+			ob_start();
 			?>
 		<tr>
 			<td><?php echo esc_html( $course_number ); ?>&nbsp;(<?php echo esc_html( $section_number ); ?>)</td>
@@ -146,6 +156,7 @@ if ( ! $subdept_obj ) {
 			<td><?php echo esc_html( $instructor ); ?></td>
 			<td><?php echo esc_html( $location_display ); ?></td>
 			<td><?php echo esc_html( $term ); ?></td>
+			<td><?php echo esc_html( $subdepartment ); ?></td>
 			<td class="none">
 				<div class="course-details-accordion">
 					<ul class="additional-info">
@@ -184,6 +195,7 @@ if ( ! $subdept_obj ) {
 				<th>Instructor</th>
 				<th>Location</th>
 				<th>Term</th>
+				<th>SubDepartment</th>
 				<th class="none">Additional Details</th>
 			</tr>
 		</thead>
@@ -196,5 +208,6 @@ if ( ! $subdept_obj ) {
 	</table>
 	</div>
 </main><!-- #main -->
+
 <?php
 get_footer();

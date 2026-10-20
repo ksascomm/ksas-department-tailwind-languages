@@ -296,27 +296,27 @@ function ksas_blocks_child_custom_posts_scripts() {
 		);
 	} elseif ( is_page_template( 'page-templates/language-program-courses.php' ) ) {
 		// Enqueue DataTables Styles - Fourth param must be version string.
-		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css', array(), '2.1.8' );
-		wp_enqueue_style( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.3/css/searchPanes.dataTables.min.css', array(), '2.3.3' );
-		wp_enqueue_style( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.min.css', array(), '3.0.3' );
+		wp_enqueue_style( 'data-tables', '//cdn.datatables.net/2.3.7/css/dataTables.dataTables.min.css', array(), '2.3.7' );
+		wp_enqueue_style( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.5/css/searchPanes.dataTables.min.css', array(), '2.3.5' );
+		wp_enqueue_style( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.8/css/responsive.dataTables.min.css', array(), '3.0.8' );
 
 		// Local CSS with version.
 		wp_enqueue_style( 'courses-css', get_stylesheet_directory_uri() . '/css/courses.css', array(), '1.0.2', 'all' );
 
 		// Register and Enqueue Scripts.
-		wp_register_script( 'data-tables', '//cdn.datatables.net/2.1.8/js/dataTables.min.js', array( 'jquery' ), '2.1.8', true );
+		wp_register_script( 'data-tables', '//cdn.datatables.net/2.3.7/js/dataTables.min.js', array( 'jquery' ), '2.3.7', true );
 		wp_script_add_data( 'data-tables', 'defer', true );
 		wp_enqueue_script( 'data-tables' );
 
-		wp_register_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.3/js/dataTables.searchPanes.min.js', array( 'data-tables' ), '2.3.3', true );
+		wp_register_script( 'data-tables-searchpanes', '//cdn.datatables.net/searchpanes/2.3.5/js/dataTables.searchPanes.min.js', array( 'data-tables' ), '2.3.5', true );
 		wp_script_add_data( 'data-tables-searchpanes', 'defer', true );
 		wp_enqueue_script( 'data-tables-searchpanes' );
 
-		wp_register_script( 'data-tables-select', '//cdn.datatables.net/select/2.1.0/js/dataTables.select.min.js', array( 'data-tables' ), '2.1.0', true );
+		wp_register_script( 'data-tables-select', '//cdn.datatables.net/select/3.1.3/js/dataTables.select.min.js', array( 'data-tables' ), '3.1.3', true );
 		wp_script_add_data( 'data-tables-select', 'defer', true );
 		wp_enqueue_script( 'data-tables-select' );
 
-		wp_enqueue_script( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.min.js', array( 'data-tables' ), '3.0.3', true );
+		wp_enqueue_script( 'data-tables-responsive', '//cdn.datatables.net/responsive/3.0.8/js/dataTables.responsive.min.js', array( 'data-tables' ), '3.0.8', true );
 		wp_script_add_data( 'data-tables-responsive', 'defer', true );
 
 		// Local JS - Added data-tables as a dependency.
@@ -329,3 +329,27 @@ function ksas_blocks_child_custom_posts_scripts() {
 		);
 	}
 }
+
+/**
+ * Inject Vite Live Reload Client & Assets during Development
+ */
+function ksas_child_vite_dev_reload() {
+	$vite_server = 'http://localhost:5174';
+
+	// Simple check if Vite dev server is active on port 5174.
+	$connection = @fsockopen( 'localhost', 5174, $errno, $errstr, 0.1 );
+	if ( $connection ) {
+		fclose( $connection );
+
+		// Inject the Vite HMR websocket client and entrypoint.
+		add_action(
+			'wp_head',
+			function () use ( $vite_server ) {
+				echo '<script type="module" src="' . $vite_server . '/@vite/client"></script>';
+				// If you import style.css inside an entry JS file:
+				// echo '<script type="module" src="' . $vite_server . '/assets/js/main.js"></script>';
+			}
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'ksas_child_vite_dev_reload', 1 );
