@@ -5,7 +5,7 @@ Description:  KSAS Department Tailwind Child Theme
 Author:       KSAS Communications
 Author URI:   https://github.com/ksascomm
 Template:     ksas-department-tailwind
-Version:      7.0.0
+Version:      7.1.0
 Text Domain:  ksas-department-tailwind
 */
 
@@ -44,6 +44,15 @@ ul.degrees {
 .degree.on ~ .degree.on::before {
     content: ', ';
     background-color: transparent;
+}
+
+.front .news-section a.text-white {
+	color: #fefefe;
+	border: none;
+}
+
+.front .news-section a.text-white:hover {
+	color: #31261d;
 }
 
 /* ==========================================================================
@@ -112,13 +121,13 @@ ul.degrees {
 }
 
 .wp-block-post-date {
-    font-family: "worksans-bold", sans-serif;
+    font-family: "Work Sans", "system-ui", "BlinkMacSystemFont", "-apple-system", "Segoe UI", "sans-serif";
     font-weight: 700;
 }
 
 .home .front h2.wp-block-heading {
 	font-weight: 600;
-	font-family: hopkinsslab-semibold, system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, sans-serif;
+	font-family: "Hopkins Slab", "Georgia", "serif";
 }
 
 .home .front h2.wp-block-heading {
@@ -200,12 +209,12 @@ ul.degrees {
 
 .tribe-common-h8.tribe-events-pro-summary__event-title {
 	font-weight: 600;
-	font-family: hopkinsslab-semibold, system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, sans-serif;
+	font-family: "Hopkins Slab", "Georgia", "serif";
 }
 
 .tribe-common-b2.tribe-events-widget-events-list__event-venue a,
 .tribe-events-pro-summary__event-title-link {
-    font-family: "worksans-bold", sans-serif;
+    font-family: "Work Sans", "system-ui", "BlinkMacSystemFont", "-apple-system", "Segoe UI", "sans-serif";
     font-weight: 700;
     font-size: 1rem;
     border-bottom: 2px solid rgb(229 226 224);
